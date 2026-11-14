@@ -20,6 +20,7 @@ This implementation plan translates the product requirements and technical archi
 3. **Pluggable Payments:** All payment flows interface with a unified `IPaymentProvider` contract. YOUPI PG is implemented first, with Razorpay/Cashfree stubbed alongside for immediate switchover.
 4. **Direct Media Pipeline:** Admin image uploads bypass the Node.js application server using short-lived S3 pre-signed PUT URLs.
 5. **Mobile-First & Performance:** Target Lighthouse Mobile Score $\ge 85$ across core catalog and product routes.
+6. **Strict AWS Resource Isolation:** Dedicated bucket instance (`parnika-jewellers-v0-<env>`) and scoped IAM policies restricted strictly to `parnika-jewellers-v0-*` and `parnika_*` ARNs, guaranteeing existing projects in the user's AWS account are never read, modified, or disturbed.
 
 ---
 
@@ -63,9 +64,10 @@ Initialize the repository workspace, configure the TypeScript Next.js App Router
   - Initialize Next.js 14/15 with TypeScript, Tailwind CSS, ESLint, and Prettier.
   - Establish base directory structure per [architecture.md](file:///d:/PJStore%20V0/Docs/architecture.md#21-route-structure--rendering-strategy).
   - Configure environment variable schema and validator using `zod` (`lib/env.ts`).
-- [ ] **0.2 AWS Infrastructure Setup (`ap-south-1`):**
-  - Create S3 Bucket `parnika-store-<env>` with Block All Public Access enabled.
-  - Configure CloudFront distribution with Origin Access Control (OAC) targeting the S3 bucket.
+- [ ] **0.2 AWS Infrastructure Setup & Resource Isolation (`ap-south-1`):**
+  - Create dedicated S3 Bucket `parnika-jewellers-v0-<env>` with Block All Public Access enabled.
+  - Ensure zero interference with other buckets in the AWS account: verify scoped IAM policy restricts access strictly to `arn:aws:s3:::parnika-jewellers-v0-*` and `arn:aws:dynamodb:ap-south-1:*:table/parnika_*`.
+  - Configure dedicated CloudFront distribution with Origin Access Control (OAC) targeting only this S3 bucket.
   - Provision Amazon DynamoDB tables (On-Demand capacity) with table prefix `parnika_`:
     - `parnika_products` (PK: `id`, GSIs: `slug`, `category-createdAt`, `sku`)
     - `parnika_categories` (PK: `id`, GSI: `slug`)
@@ -347,7 +349,7 @@ Execute comprehensive load and concurrency tests, conduct security audits, achie
   - Provide customer privacy controls and data deletion request workflow compliant with India DPDP Act.
 - [ ] **7.4 Disaster Recovery & Backup Automation:**
   - Deploy AWS EventBridge scheduled rule triggering nightly backup script (`scripts/backup-tables.ts`).
-  - Export all DynamoDB tables to compressed JSON snapshots in `s3://parnika-store-prod/backups/<date>/`.
+  - Export all DynamoDB tables to compressed JSON snapshots in `s3://parnika-jewellers-v0-prod/backups/<date>/`.
 - [ ] **7.5 Production Cutover & Domain Mapping:**
   - Configure custom domain (`pjstore.com`) on Route 53 with SSL certificate issued via AWS Certificate Manager (ACM).
   - Configure production environment variables and deploy Next.js application to target production hosting.

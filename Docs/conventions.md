@@ -19,6 +19,7 @@
 4. **Direct S3 Uploads:** Never stream media files through Next.js serverless functions. Large media uploads MUST go directly from the client to S3 using short-lived pre-signed PUT URLs.
 5. **Mobile-First & Tokenized Styling:** Never write arbitrary hardcoded hex colors or non-responsive pixel layouts. All styling MUST consume the brand design tokens defined in `styles/tokens.css`.
 6. **Strict Type Safety:** Zero tolerance for `any`, `@ts-ignore`, or loose type assertions. All external inputs (APIs, query parameters, webhooks, forms) MUST be validated with `zod`.
+7. **Strict AWS Resource Isolation:** Never list, scan, read, modify, or delete S3 buckets or DynamoDB tables outside this project's dedicated resources (`parnika-jewellers-v0-*` and `parnika_*`). All IAM credentials MUST be scoped strictly to these resource ARNs, guaranteeing zero interference with any other projects in the user's AWS account.
 
 ---
 
@@ -429,6 +430,8 @@ To prevent dependency bloat, security risks, and version divergence, developers 
    - Bypassing S3 pre-signed URLs leads to Vercel/Node 4.5MB request payload limit errors and worker memory spikes.
 7. **Never commit `.env` or `.env.local`:**
    - All environment secrets must remain in local machines or AWS Secrets Manager. Always update `.env.example` when adding a new variable.
+8. **Never use wildcard `Resource: "*"` in AWS policies or touch non-project buckets:**
+   - Any script, migration, or S3 client call must target exclusively `process.env.S3_BUCKET_NAME` (which resolves to `parnika-jewellers-v0-<env>`). Never execute account-wide bucket list operations (`s3:ListAllMyBuckets`) or actions targeting foreign buckets in the AWS account.
 
 ---
 
@@ -483,4 +486,5 @@ Before considering any task or feature complete, verify:
 - [ ] Is the page/component responsive and usable on a 360px wide mobile viewport?
 - [ ] Are image tags using Next.js `<Image />` with appropriate `width`, `height`, or `fill`?
 - [ ] Are audit logs recorded for admin mutations?
+- [ ] Are AWS operations strictly restricted to `parnika-jewellers-v0-*` and `parnika_*` without touching other account resources?
 - [ ] Did you avoid adding unapproved npm packages?

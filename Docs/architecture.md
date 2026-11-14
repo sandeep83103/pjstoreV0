@@ -304,10 +304,15 @@ const params = {
 ```
 If the condition fails (`ConditionalCheckFailedException`), the checkout aborts immediately with a user-facing out-of-stock message, avoiding inventory discrepancy.
 
-### 4.2 S3 Bucket Structure & Asset Delivery
+### 4.2 S3 Bucket Structure & Dedicated Instance Isolation
+
+> **CRITICAL AWS MULTI-PROJECT ISOLATION GUARANTEE:**  
+> The AWS account hosting this application may contain other independent projects and buckets. To guarantee zero disruption or cross-talk with existing projects:
+> 1. **Dedicated S3 Bucket Instance:** All assets, invoices, and backups for this store are strictly isolated in a dedicated project bucket: `parnika-jewellers-v0-<env>` (e.g. `parnika-jewellers-v0-prod`). No existing buckets are ever accessed, read, listed, or mutated.
+> 2. **Dedicated Scoped IAM Policy:** The IAM credentials (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`) assigned to this application MUST be constrained via a resource-level IAM policy. Wildcard `Resource: "*"` is prohibited. Actions are restricted solely to `arn:aws:s3:::parnika-jewellers-v0-*` and `arn:aws:dynamodb:ap-south-1:*:table/parnika_*`.
 
 ```
-parnika-store-prod/
+parnika-jewellers-v0-prod/
 ├── products/
 │   └── <productId>/
 │       ├── <uuid>-original.jpg      # Uploaded master
@@ -330,8 +335,50 @@ parnika-store-prod/
         └── coupons.json.gz
 ```
 
-- **CloudFront Integration:** S3 is completely private (`BlockPublicAcls = true`, `BlockPublicPolicy = true`). Assets are accessed exclusively through an AWS CloudFront Origin Access Control (OAC) distribution.
+- **CloudFront Integration:** S3 is completely private (`BlockPublicAcls = true`, `BlockPublicPolicy = true`). Assets are accessed exclusively through an AWS CloudFront Origin Access Control (OAC) distribution dedicated to this bucket.
 - **Admin Upload Pipeline:** The browser requests a pre-signed PUT URL from `/api/admin/uploads/sign`, uploads directly to S3 with cryptographic MD5 checks, and an internal serverless handler or background step handles WebP conversion.
+
+#### Dedicated Project IAM Policy Specification
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "IsolatedS3AccessForParnika",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::parnika-jewellers-v0-*",
+        "arn:aws:s3:::parnika-jewellers-v0-*/*"
+      ]
+    },
+    {
+      "Sid": "IsolatedDynamoDBAccessForParnika",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:BatchGetItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:ap-south-1:*:table/parnika_*",
+        "arn:aws:dynamodb:ap-south-1:*:table/parnika_*/index/*"
+      ]
+    }
+  ]
+}
+```
 
 ---
 
@@ -587,7 +634,7 @@ AWS_REGION=ap-south-1
 AWS_ACCESS_KEY_ID=AKIA...
 AWS_SECRET_ACCESS_KEY=...
 DYNAMO_TABLE_PREFIX=parnika_
-S3_BUCKET_NAME=parnika-store-prod
+S3_BUCKET_NAME=parnika-jewellers-v0-prod
 CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.pjstore.com
 
 # Auth & Secrets
@@ -626,4 +673,5 @@ NEXT_PUBLIC_STORE_URL=https://pjstore.com
 | **ADR-03** | Decoupled PaymentProvider Interface | Accepted | Abstract payments behind an adapter interface; implement YOUPI PG first while stubbing Razorpay/Cashfree. | Protects the business against YOUPI PG downtime or compliance issues; allows switching gateways with zero changes to checkout logic. |
 | **ADR-04** | Direct S3 Client Uploads | Accepted | Admin uploads images directly to S3 via pre-signed URLs rather than streaming large files through Next.js server. | Avoids Next.js server memory spikes and serverless timeout limits; enables rapid multi-image product listings. |
 | **ADR-05** | CloudFront Private Bucket OAC | Accepted | Block all direct public access to S3; route all public assets through CloudFront with Origin Access Control. | Enhanced security, zero egress costs between S3 and CloudFront, global low latency for mobile customers. |
+| **ADR-06** | Dedicated AWS Resource Isolation | Accepted | Deploy a dedicated S3 bucket (`parnika-jewellers-v0-<env>`) and scope IAM policies strictly to `parnika-jewellers-v0-*` and `parnika_*`. | Completely prevents touching, scanning, or disturbing any other existing projects, buckets, or tables in the user's AWS account. |
 

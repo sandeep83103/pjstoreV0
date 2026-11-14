@@ -91,3 +91,7 @@ Because a unified envelope enables frontend clients to handle responses, validat
 ### DEC-20: Order-Level Tax Calculation over Line-Item Fractional Tax Summation
 We chose calculating 3% GST on the order subtotal rather than summing independently rounded fractional line-item taxes.  
 Because summing rounded fractions across multiple small accessories causes 1-paise discrepancies between itemized lines and the final total on GST invoices.
+
+### DEC-21: Dedicated Project AWS Instance & Scoped IAM Policy over Shared / Wildcard Permissions
+We chose a dedicated project S3 bucket instance (`parnika-jewellers-v0-<env>`) and scoped IAM policies over account-wide shared buckets or wildcard permissions.  
+Because strictly scoping access to `parnika-jewellers-v0-*` and `parnika_*` ARNs guarantees that existing client projects and buckets in the user's AWS account are never read, altered, or disturbed.
