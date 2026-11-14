@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
 import { categoryRepository, productRepository, couponRepository } from '../lib/data';
 import { Category, Product, Coupon } from '../lib/types';
 import crypto from 'crypto';

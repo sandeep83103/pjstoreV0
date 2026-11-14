@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
-import { env } from '../env';
 
-const secretKey = new TextEncoder().encode(env.JWT_SECRET);
+const jwtSecret = process.env.JWT_SECRET || 'dev-insecure-jwt-secret-min-16-characters';
+const secretKey = new TextEncoder().encode(jwtSecret);
 
 export const COOKIE_NAMES = {
   CUSTOMER: 'customer_session',

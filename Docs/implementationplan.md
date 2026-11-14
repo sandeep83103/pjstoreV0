@@ -99,7 +99,7 @@ Initialize the repository workspace, configure the TypeScript Next.js App Router
 Implement the visual identity derived from the brand logo, create responsive layout shells (storefront and admin), and configure authentication for both customers and store administrators.
 
 #### Deliverables & Tasks
-- [ ] **1.1 Design System & Brand Styling:**
+- [x] **1.1 Design System & Brand Styling:**
   - Create `styles/tokens.css` with exact brand hex variables:
     - Primary Emerald: `#0B3B24` (surfaces, header, accents)
     - Deep Emerald: `#062617` (footers, dark backgrounds)
@@ -109,7 +109,7 @@ Implement the visual identity derived from the brand logo, create responsive lay
     - Neutral Ivory: `#FCFBF7` (product backdrop and card surfaces)
   - Process `Final Logo.jpeg` into `/public/brand/logo.png` and extract crest favicon `/public/favicon.ico`.
   - Configure Tailwind theme extensions in `tailwind.config.ts` mapping to these tokens.
-- [ ] **1.2 Storefront & Admin Layout Shells:**
+- [x] **1.2 Storefront & Admin Layout Shells:**
   - Storefront layout (`app/(storefront)/layout.tsx`):
     - Header with logo, mobile search bar, category navigation menu, cart icon with badge, WhatsApp quick link.
     - Responsive mobile navigation drawer for phones (portrait/landscape).
@@ -117,11 +117,11 @@ Implement the visual identity derived from the brand logo, create responsive lay
   - Admin layout (`app/admin/layout.tsx`):
     - Collapsible sidebar with navigation items: Dashboard, Inventory, Orders, Coupons, Payments, Customers, Settings.
     - Admin header with staff identifier, quick store link, and logout action.
-- [ ] **1.3 Customer Authentication (`/account/login`, `/api/auth/*`):**
+- [x] **1.3 Customer Authentication (`/account/login`, `/api/auth/*`):**
   - Implement phone/email OTP and password login paths.
   - Store session credentials in stateless `httpOnly`, `Secure`, `SameSite=Lax` JWT cookies (30-day expiry).
   - Provide session hook `useAuth()` and server helper `getCurrentUser()`.
-- [ ] **1.4 Admin Authentication & RBAC (`/admin/login`, `/api/admin/auth/*`):**
+- [x] **1.4 Admin Authentication & RBAC (`/admin/login`, `/api/admin/auth/*`):**
   - Seed bootstrap admin via environment variables (`ADMIN_BOOTSTRAP_EMAIL`, `ADMIN_BOOTSTRAP_PASSWORD`).
   - Hash passwords using `bcrypt` (12 rounds) or `argon2id`.
   - Issue distinct `admin_session` token (8-hour expiry).

@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
 import { env } from '../lib/env';
 import { getTableName } from '../lib/aws/dynamoClient';
 import { PROJECT_S3_BUCKET, getCloudFrontAssetUrl } from '../lib/aws/s3Client';

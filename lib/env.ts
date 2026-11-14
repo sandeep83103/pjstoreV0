@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env / .env.local if present
-dotenv.config({ path: '.env.local' });
-dotenv.config();
+if (typeof window === 'undefined') {
+  dotenv.config({ path: '.env.local' });
+  dotenv.config();
+}
 
 const envSchema = z.object({
   // AWS Configuration (ap-south-1 Mumbai)

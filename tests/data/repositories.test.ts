@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
 import { ProductSchema, CategorySchema, OrderSchema, CouponSchema } from '../../lib/types';
 import { productRepository, categoryRepository, couponRepository } from '../../lib/data';
 

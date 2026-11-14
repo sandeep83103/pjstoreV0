@@ -11,7 +11,8 @@
     "test": "tsx tests/data/repositories.test.ts",
     "setup:dynamo": "tsx scripts/setup-dynamo.ts",
     "seed": "tsx scripts/seed.ts",
-    "test:eval-p0": "tsx scripts/test-eval-p0.ts"
+    "test:eval-p0": "tsx scripts/test-eval-p0.ts",
+    "test:eval-p1": "tsx scripts/test-eval-p1.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.714.0",
