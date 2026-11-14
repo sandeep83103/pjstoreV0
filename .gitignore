@@ -40,3 +40,6 @@ next-env.d.ts
 # Coverage directory used by tools like istanbul
 coverage/
 *.lcov
+
+# Local database backups
+.backups/

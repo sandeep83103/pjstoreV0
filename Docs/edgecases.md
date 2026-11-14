@@ -91,7 +91,14 @@ This section documents failure modes, race conditions, and edge boundaries ident
 - **Regression Guard:** What test or check prevents it from recurring?
 ```
 
-*(No discovered edge cases logged yet — development in pre-implementation stage).*
+### [EC-DISC-001] PII Field Retention During DPDP Data Erasure in UserRepository
+- **Date Discovered:** 2026-11-14
+- **Phase / Component:** Phase 7 — Security Hardening & DPDP Compliance
+- **Trigger Scenario:** Customer or administrator issues a statutory personal data erasure request under India DPDP Act 2023, passing `{ email: undefined }` to `userRepository.update()`.
+- **Observed Behavior:** The existing user's email address persisted unmodified in DynamoDB and memory fallback rather than being scrubbed.
+- **Root Cause:** In `UserRepository.update()`, `updates.email ? updates.email.toLowerCase() : existing.email` evaluated to `existing.email` whenever `updates.email` was `undefined`, defeating field removal.
+- **Resolution / Applied Fix:** Refactored assignment to `'email' in updates ? (updates.email ? updates.email.toLowerCase() : undefined) : existing.email`, properly wiping email from active customer records while maintaining statutory tax order history.
+- **Regression Guard:** Covered by `EVAL-P7-04-B` in `scripts/test-eval-p7.ts`.
 
 ---
 
@@ -99,9 +106,9 @@ This section documents failure modes, race conditions, and edge boundaries ident
 
 Before production launch (Phase 7), each edge case in this document must have a corresponding verification test:
 
-- [ ] **EC-INV-01 (Zero-Oversell):** Verified via `scripts/load-test-stock.ts` (20 parallel requests for 1 item).
-- [ ] **EC-INV-02 (Abandoned Checkout):** Verified via TTL simulation and stock release verification.
-- [ ] **EC-PAY-01 (Webhook Ahead of Redirect):** Verified by firing webhook manually before client confirmation loads.
-- [ ] **EC-PAY-03 (Duplicate Webhook):** Verified by posting identical webhook payload twice; verify single order update.
-- [ ] **EC-CPN-01 (Multi-Tab Coupon):** Verified via parallel checkout script attempting identical single-use coupon.
-- [ ] **EC-MED-03 (EXIF Rotation):** Verified by uploading portrait smartphone photo; confirm proper upright WebP.
+- [x] **EC-INV-01 (Zero-Oversell):** Verified via `scripts/load-test-stock.ts` (20 parallel requests for 1 item).
+- [x] **EC-INV-02 (Abandoned Checkout):** Verified via TTL simulation and stock release verification.
+- [x] **EC-PAY-01 (Webhook Ahead of Redirect):** Verified by firing webhook manually before client confirmation loads.
+- [x] **EC-PAY-03 (Duplicate Webhook):** Verified by posting identical webhook payload twice; verify single order update.
+- [x] **EC-CPN-01 (Multi-Tab Coupon):** Verified via parallel checkout script attempting identical single-use coupon.
+- [x] **EC-MED-03 (EXIF Rotation):** Verified by uploading portrait smartphone photo; confirm proper upright WebP.

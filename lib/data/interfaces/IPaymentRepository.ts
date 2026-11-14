@@ -6,4 +6,6 @@ export interface IPaymentRepository {
   findByProviderRef(providerRef: string): Promise<PaymentRecord | null>;
   recordPaymentEvent(payment: PaymentRecord): Promise<PaymentRecord>;
   updateStatus(id: string, status: PaymentStatus): Promise<PaymentRecord>;
+  listAll(limit?: number): Promise<PaymentRecord[]>;
+  listUnmatched(limit?: number): Promise<PaymentRecord[]>;
 }

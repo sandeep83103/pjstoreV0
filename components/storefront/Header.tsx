@@ -3,21 +3,23 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ShoppingBag, User, Search, MessageCircle } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, Search, MessageCircle, Heart, Package } from 'lucide-react';
+import { useCart } from '@/app/context/CartContext';
 
 const CATEGORIES = [
   { name: 'All Jewellery', href: '/catalog' },
-  { name: 'One Gram Gold', href: '/catalog?category=cat-one-gram' },
-  { name: 'Necklaces & Chokers', href: '/catalog?category=cat-necklaces' },
-  { name: 'Earrings & Jhumkas', href: '/catalog?category=cat-earrings' },
-  { name: 'Bangles & Kadas', href: '/catalog?category=cat-bangles' },
-  { name: 'Rings', href: '/catalog?category=cat-rings' },
-  { name: 'Bridal Sets', href: '/catalog?category=cat-bridal' },
+  { name: 'One Gram Gold', href: '/catalog/one-gram-gold' },
+  { name: 'Necklaces & Chokers', href: '/catalog/necklaces' },
+  { name: 'Earrings & Jhumkas', href: '/catalog/earrings' },
+  { name: 'Bangles & Kadas', href: '/catalog/bangles' },
+  { name: 'Rings', href: '/catalog/rings' },
+  { name: 'Bridal Sets', href: '/catalog/bridal-sets' },
 ];
 
 export function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const { itemCount, openDrawer } = useCart();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,10 +109,29 @@ export function Header() {
                 <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
               </a>
 
-              {/* Customer Account */}
+              {/* Wishlist */}
+              <Link
+                href="/account/wishlist"
+                className="p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+                title="Saved Items / Wishlist"
+                aria-label="Customer Wishlist"
+              >
+                <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
+              </Link>
+
+              {/* Customer Account / Orders */}
+              <Link
+                href="/account/orders"
+                className="p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+                title="My Orders & Tracking"
+                aria-label="Customer Orders"
+              >
+                <Package className="w-5 h-5 sm:w-6 sm:h-6" />
+              </Link>
+
               <Link
                 href="/account/login"
-                className="p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+                className="p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors hidden sm:inline-block"
                 title="Account Login"
                 aria-label="Customer Account Login"
               >
@@ -118,17 +139,20 @@ export function Header() {
               </Link>
 
               {/* Shopping Cart */}
-              <Link
-                href="/cart"
-                className="relative p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors"
-                title="Shopping Cart"
-                aria-label="Shopping Cart"
+              <button
+                type="button"
+                onClick={openDrawer}
+                className="relative p-2 rounded-full text-[var(--color-accent-light-gold)] hover:text-white hover:bg-[var(--color-primary-dark)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-gold)]"
+                title={`Shopping Cart (${itemCount} items)`}
+                aria-label={`Shopping Cart with ${itemCount} items`}
               >
                 <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />
-                <span className="absolute top-1 right-1 bg-[var(--color-ruby-alert)] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                  0
-                </span>
-              </Link>
+                {itemCount > 0 && (
+                  <span className="absolute top-1 right-1 bg-[var(--color-ruby-alert)] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center animate-pulse">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -220,8 +244,22 @@ export function Header() {
 
               <div className="my-6 border-t border-white/10 pt-4 space-y-3 text-sm">
                 <p className="text-[11px] font-semibold text-[var(--color-accent-gold)] uppercase tracking-wider mb-2">
-                  Account &amp; Help
+                  Account &amp; Orders
                 </p>
+                <Link
+                  href="/account/orders"
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="flex items-center gap-2 py-1 text-white hover:text-[var(--color-accent-gold)]"
+                >
+                  <Package className="w-4 h-4 text-[var(--color-accent-gold)]" /> Track My Orders
+                </Link>
+                <Link
+                  href="/account/wishlist"
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="flex items-center gap-2 py-1 text-white hover:text-[var(--color-accent-gold)]"
+                >
+                  <Heart className="w-4 h-4 text-[var(--color-ruby-alert)]" /> My Wishlist
+                </Link>
                 <Link
                   href="/account/login"
                   onClick={() => setIsDrawerOpen(false)}

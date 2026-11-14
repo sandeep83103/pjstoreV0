@@ -140,11 +140,11 @@ Implement the visual identity derived from the brand logo, create responsive lay
 Build the customer-facing browsing experience, search and filtering systems, product details page with image zoom, and S3 pre-signed upload pipelines.
 
 #### Deliverables & Tasks
-- [ ] **2.1 S3 Media Pipeline:**
+- [x] **2.1 S3 Media Pipeline:**
   - Implement `/api/admin/uploads/sign` route handler to generate short-lived pre-signed PUT URLs with file size ($\le 10\text{MB}$) and MIME type (`image/jpeg`, `image/png`, `image/webp`) restrictions.
   - Implement client-side direct upload component with upload progress indicator.
   - Image serving strategy: CloudFront CDN URL generation (`https://assets.pjstore.com/products/<productId>/<file>.webp`).
-- [ ] **2.2 Catalog Browsing & Filtering (`/catalog`, `/catalog/[category]`):**
+- [x] **2.2 Catalog Browsing & Filtering (`/catalog`, `/catalog/[category]`):**
   - Implement Server-Side Rendered (SSR) / Incremental Static Regeneration (ISR) catalog pages.
   - Multi-faceted filter system:
     - Category selection (Fashion Jewellery, One Gram Gold, Necklaces, etc.)
@@ -153,7 +153,7 @@ Build the customer-facing browsing experience, search and filtering systems, pro
     - Occasion (Bridal, Festive, Daily Wear)
     - Stock status filter ("In Stock Only")
   - Sort options: Price Low-to-High, Price High-to-Low, Newest Arrivals, Best Sellers.
-- [ ] **2.3 Product Detail Page (PDP) (`/product/[slug]`):**
+- [x] **2.3 Product Detail Page (PDP) (`/product/[slug]`):**
   - Image gallery with thumbnail carousel and desktop hover zoom.
   - Dynamic pricing box showing Selling Price, MRP (with strike-through), and percentage discount badge.
   - Product specifications table (Product Code, Material, Polish Warranty, Plating, Care instructions).
@@ -174,11 +174,11 @@ Build the customer-facing browsing experience, search and filtering systems, pro
 Equip the store owner with a management panel to manage stock, edit prices, upload product imagery directly to S3, and perform bulk CSV imports without developer intervention.
 
 #### Deliverables & Tasks
-- [ ] **3.1 Inventory Dashboard (`/admin/inventory`):**
+- [x] **3.1 Inventory Dashboard (`/admin/inventory`):**
   - Data table displaying: Image, Product Name, SKU, Supplier Code (e.g. `DBI-102`), Selling Price, Cost Price, Stock Count, Status toggle (Active/Draft/Archived).
   - Low-stock badge highlighting items where $\mathtt{stock} \le \mathtt{lowStockAt}$.
   - Search by product title, SKU, or supplier code; filter by category and stock level.
-- [ ] **3.2 Product Editor (`/admin/inventory/new`, `/admin/inventory/[id]`):**
+- [x] **3.2 Product Editor (`/admin/inventory/new`, `/admin/inventory/[id]`):**
   - Multi-image drag-and-drop uploader streaming directly to S3 via pre-signed URLs.
   - Drag-to-reorder product gallery images; set primary thumbnail.
   - Form inputs for:
@@ -186,12 +186,12 @@ Equip the store owner with a management panel to manage stock, edit prices, uplo
     - Pricing: Selling Price, MRP, Cost Price (for admin margin calculation).
     - Inventory: SKU, Supplier Code, Initial Stock, Low-Stock Threshold.
     - Jewellery Specs: Finish, Base Metal, Weight, Stone Type, Dimensions.
-  - Zod validation schema on client and server to prevent invalid data formats.
-- [ ] **3.3 Bulk Catalog CSV Import (`/admin/inventory/bulk`):**
+    - Zod validation schema on client and server to prevent invalid data formats.
+- [x] **3.3 Bulk Catalog CSV Import (`/admin/inventory/bulk`):**
   - Downloadable CSV template with standard headers (`title`, `sku`, `supplierCode`, `category`, `price`, `mrp`, `costPrice`, `stock`, `imageUrls`, `description`).
   - File upload parser validating rows, generating SKUs if missing, and batching writes via DynamoDB `BatchWriteItem`.
   - Detailed error reporting modal displaying failed rows and validation reasons.
-- [ ] **3.4 Audit Trail Integration:**
+- [x] **3.4 Audit Trail Integration:**
   - Write all product additions, price adjustments, and stock edits to `parnika_audit_logs`.
 
 #### Verification & Exit Criteria
@@ -207,12 +207,12 @@ Equip the store owner with a management panel to manage stock, edit prices, uplo
 Implement an e-commerce shopping cart, discount coupon engine, and checkout pipeline with atomic stock deduction to prevent overselling.
 
 #### Deliverables & Tasks
-- [ ] **4.1 Shopping Cart Subsystem (`/cart`, `app/context/CartContext.tsx`):**
+- [x] **4.1 Shopping Cart Subsystem (`/cart`, `app/context/CartContext.tsx`):**
   - Persistent cart: LocalStorage for guest users, synchronized to DynamoDB `parnika_carts` on login.
   - Cart drawer and dedicated `/cart` page with line items, quantity increment/decrement, item removal.
   - Real-time stock validation: Display alert if item in cart exceeds current available inventory.
   - Price summary component: Subtotal, Discount, Shipping charges (free shipping threshold logic), Estimated Total.
-- [ ] **4.2 Coupon & Promotion Engine (`lib/data/CouponRepository.ts`, `/api/coupons/*`):**
+- [x] **4.2 Coupon & Promotion Engine (`lib/data/CouponRepository.ts`, `/api/coupons/*`):**
   - Coupon validation endpoint verifying:
     - `active === true`
     - Current date within `validFrom` and `validTo`
@@ -221,14 +221,14 @@ Implement an e-commerce shopping cart, discount coupon engine, and checkout pipe
     - Customer usage count $< \mathtt{perUserLimit}$
   - Discount calculation: Flat amount or percentage with $\mathtt{maxDiscount}$ cap.
   - Admin coupon manager (`/admin/coupons`): Create, expire, and track coupon usage.
-- [ ] **4.3 Checkout Flow (`/checkout`):**
+- [x] **4.3 Checkout Flow (`/checkout`):**
   - Step 1: Customer details & shipping address (saved address selector for logged-in users).
   - Step 2: Shipping method selection (Standard Delivery / Express Delivery).
   - Step 3: Payment method selection:
     - Dynamic UPI / Online Payment (YOUPI PG / Gateway)
     - Cash on Delivery (COD)
   - Step 4: Order review and price breakdown.
-- [ ] **4.4 Concurrency Control & Atomic Stock Deduction:**
+- [x] **4.4 Concurrency Control & Atomic Stock Deduction:**
   - Implement DynamoDB `TransactWriteItems` inside `OrderRepository.createOrderWithLock()`:
     1. Condition check and stock decrement for each line item:
        $$\mathtt{ConditionExpression} = \text{"stock >= :qty AND #status = :active"}$$
@@ -248,7 +248,7 @@ Implement an e-commerce shopping cart, discount coupon engine, and checkout pipe
 Implement the payment abstraction layer, integrate the self-hosted YOUPI PG (V2) gateway for dynamic UPI payments, construct secure webhook handlers with idempotency, and stub a licensed gateway (Razorpay) as a fallback.
 
 #### Deliverables & Tasks
-- [ ] **5.1 Payment Provider Interface (`lib/payments/`):**
+- [x] **5.1 Payment Provider Interface (`lib/payments/`):**
   - Define `IPaymentProvider` contract:
     ```typescript
     export interface IPaymentProvider {
@@ -258,17 +258,17 @@ Implement the payment abstraction layer, integrate the self-hosted YOUPI PG (V2)
       refund(paymentId: string, amount: number): Promise<RefundResult>;
     }
     ```
-- [ ] **5.2 YOUPI PG Gateway Adapter (`lib/payments/youpi.ts`):**
+- [x] **5.2 YOUPI PG Gateway Adapter (`lib/payments/youpi.ts`):**
   - REST client communicating with YOUPI PG microservice (`YOUPI_BASE_API_URL`).
   - Request payment session: Send order number, amount in paise, customer phone, return callback URL.
   - Receive session tokens and dynamic UPI QR string for on-screen customer display.
-- [ ] **5.3 Cash on Delivery (COD) Adapter (`lib/payments/cod.ts`):**
+- [x] **5.3 Cash on Delivery (COD) Adapter (`lib/payments/cod.ts`):**
   - Immediately transitions order to `paymentStatus: PENDING_COD` and `orderStatus: PLACED`.
   - Verifies COD eligibility rules (e.g. cart total $\le \text{₹10,000}$).
-- [ ] **5.4 Licensed Gateway Fallback (`lib/payments/razorpay.ts`):**
+- [x] **5.4 Licensed Gateway Fallback (`lib/payments/razorpay.ts`):**
   - Stubbed / functional Razorpay adapter implementing `IPaymentProvider` for credit/debit card, net banking, and verified UPI processing.
   - Gateway selection switch via `PAYMENT_PROVIDER` environment variable.
-- [ ] **5.5 Payment Webhook Handler (`/api/payments/webhook/[provider]`):**
+- [x] **5.5 Payment Webhook Handler (`/api/payments/webhook/[provider]`):**
   - Signature validation: Verify HMAC-SHA256 signature against `YOUPI_WEBHOOK_SECRET` before parsing payload.
   - Idempotency guard:
     - Check if `providerRef` exists in `parnika_payments`.
@@ -276,7 +276,7 @@ Implement the payment abstraction layer, integrate the self-hosted YOUPI PG (V2)
   - State update:
     - Execute `TransactWriteItem` updating order to `paymentStatus: PAID`, `orderStatus: PLACED`.
     - Record full webhook event and timestamp in `parnika_payments`.
-- [ ] **5.6 Admin Payment Reconciliation Dashboard (`/admin/payments`):**
+- [x] **5.6 Admin Payment Reconciliation Dashboard (`/admin/payments`):**
   - Live status indicators for YOUPI PG observer services (Bank SMS / Gmail monitors).
   - Unmatched payments table with manual reconciliation action ("Mark as Verified").
 
@@ -293,13 +293,13 @@ Implement the payment abstraction layer, integrate the self-hosted YOUPI PG (V2)
 Build the order lifecycle pipeline, generate GST-compliant PDF invoices, enable customer order tracking, and dispatch automated WhatsApp and Email notifications.
 
 #### Deliverables & Tasks
-- [ ] **6.1 Order Lifecycle Management (`/admin/orders`):**
+- [x] **6.1 Order Lifecycle Management (`/admin/orders`):**
   - Order status workflow:
     $$\text{PLACED} \longrightarrow \text{PAID} \longrightarrow \text{PACKED} \longrightarrow \text{SHIPPED} \longrightarrow \text{DELIVERED}$$
     (with branch paths for $\text{CANCELLED}$ and $\text{REFUNDED}$).
   - Admin order detail view: Item snapshots, address, payment method, courier provider, tracking number input.
   - Printable packing slip with SKU barcodes/supplier codes for store packing staff.
-- [ ] **6.2 GST-Compliant PDF Invoice Generator:**
+- [x] **6.2 GST-Compliant PDF Invoice Generator:**
   - Implement PDF generation pipeline (`lib/invoices/generator.ts`) using PDFKit or `@react-pdf/renderer`.
   - Invoice specification:
     - Store GSTIN, legal business name, registered address.
@@ -308,12 +308,12 @@ Build the order lifecycle pipeline, generate GST-compliant PDF invoices, enable 
     - HSN Code (7117 for imitation/one-gram jewellery).
     - Clear tax breakdown: CGST (1.5%) + SGST (1.5%) for intra-state, or IGST (3%) for inter-state.
   - Save generated PDF to S3 `invoices/INV-<orderNo>.pdf` and provide authenticated download link.
-- [ ] **6.3 Customer Account & Order Tracking (`/account/orders`):**
+- [x] **6.3 Customer Account & Order Tracking (`/account/orders`):**
   - Customer order history with timeline visualization (Order Placed $\rightarrow$ Dispatched $\rightarrow$ Out for Delivery $\rightarrow$ Delivered).
   - Direct tracking link to courier partner (Delhivery/Shiprocket/India Post).
   - Re-order action (adds current in-stock items back to cart).
   - Wishlist management (`/account/wishlist`).
-- [ ] **6.4 Customer Notification Dispatchers:**
+- [x] **6.4 Customer Notification Dispatchers:**
   - Transactional Email (`lib/notifications/email.ts`):
     - Order confirmation email with attached PDF invoice via Amazon SES / SMTP.
     - Shipping dispatch notification with tracking URL.
@@ -333,24 +333,24 @@ Build the order lifecycle pipeline, generate GST-compliant PDF invoices, enable 
 Execute comprehensive load and concurrency tests, conduct security audits, achieve target Lighthouse scores, implement automated disaster recovery, and perform production cutover.
 
 #### Deliverables & Tasks
-- [ ] **7.1 Concurrency & Stress Testing:**
+- [x] **7.1 Concurrency & Stress Testing:**
   - Execute automated stress test script (`scripts/load-test-stock.ts`) simulating 20 concurrent shoppers competing for 2 stock units.
   - Verify that stock never drops below 0 and that DynamoDB transactions handle race conditions cleanly.
-- [ ] **7.2 Performance & Core Web Vitals Optimization:**
+- [x] **7.2 Performance & Core Web Vitals Optimization:**
   - Audit and tune Lighthouse metrics on Mobile:
     - Largest Contentful Paint (LCP) $\le 2.5\text{s}$
     - First Input Delay (FID) / Interaction to Next Paint (INP) $\le 200\text{ms}$
     - Cumulative Layout Shift (CLS) $\le 0.1$
   - Verify CloudFront caching headers on static assets and product image WebP variants.
   - Configure Next.js font optimization for display and body fonts.
-- [ ] **7.3 Security Hardening & DPDP Compliance:**
+- [x] **7.3 Security Hardening & DPDP Compliance:**
   - Run OWASP security checklist: Verify input sanitization, CSRF token handling, and Content Security Policy (CSP) headers.
   - Ensure all database fields with sensitive customer data (passwords, phone numbers, addresses) are encrypted at rest using AWS KMS.
   - Provide customer privacy controls and data deletion request workflow compliant with India DPDP Act.
-- [ ] **7.4 Disaster Recovery & Backup Automation:**
+- [x] **7.4 Disaster Recovery & Backup Automation:**
   - Deploy AWS EventBridge scheduled rule triggering nightly backup script (`scripts/backup-tables.ts`).
   - Export all DynamoDB tables to compressed JSON snapshots in `s3://parnika-jewellers-v0-prod/backups/<date>/`.
-- [ ] **7.5 Production Cutover & Domain Mapping:**
+- [x] **7.5 Production Cutover & Domain Mapping:**
   - Configure custom domain (`pjstore.com`) on Route 53 with SSL certificate issued via AWS Certificate Manager (ACM).
   - Configure production environment variables and deploy Next.js application to target production hosting.
   - Execute smoke tests on live domain: Category navigation, cart operations, test UPI payment, webhook delivery, admin login.
@@ -412,12 +412,12 @@ flowchart TD
 
 Every phase and feature must satisfy the following checklist before being marked complete:
 
-- [ ] **Functional Integrity:** All user flows outlined in [problemstatement.md](file:///d:/PJStore%20V0/Docs/problemstatement.md#16-acceptance-criteria-for-v1) function without uncaught exceptions.
-- [ ] **Type Safety:** 100% TypeScript compilation without `@ts-ignore` or unresolved `any` types.
-- [ ] **Contract Compliance:** Data layer strictly complies with `lib/data/interfaces/` repositories.
-- [ ] **Zero Oversell:** Stock check conditions are tested and confirmed non-negative under concurrency.
-- [ ] **Security Baseline:** Admin routes require valid admin session JWTs; API payloads are validated via Zod.
-- [ ] **Payment Safety:** Order marked `PAID` only upon cryptographic HMAC signature verification of incoming webhook.
-- [ ] **Performance Standard:** Lighthouse Mobile performance score $\ge 85$ on `/` and `/product/[slug]`.
-- [ ] **Auditability:** Sensitive mutations (pricing, stock override, coupon generation, manual payment marking) write immutable records to `parnika_audit_logs`.
+- [x] **Functional Integrity:** All user flows outlined in [problemstatement.md](file:///d:/PJStore%20V0/Docs/problemstatement.md#16-acceptance-criteria-for-v1) function without uncaught exceptions.
+- [x] **Type Safety:** 100% TypeScript compilation without `@ts-ignore` or unresolved `any` types.
+- [x] **Contract Compliance:** Data layer strictly complies with `lib/data/interfaces/` repositories.
+- [x] **Zero Oversell:** Stock check conditions are tested and confirmed non-negative under concurrency.
+- [x] **Security Baseline:** Admin routes require valid admin session JWTs; API payloads are validated via Zod.
+- [x] **Payment Safety:** Order marked `PAID` only upon cryptographic HMAC signature verification of incoming webhook.
+- [x] **Performance Standard:** Lighthouse Mobile performance score $\ge 85$ on `/` and `/product/[slug]`.
+- [x] **Auditability:** Sensitive mutations (pricing, stock override, coupon generation, manual payment marking) write immutable records to `parnika_audit_logs`.
 

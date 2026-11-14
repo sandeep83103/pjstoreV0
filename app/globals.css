@@ -8,11 +8,14 @@
   body {
     background-color: var(--color-surface-ivory);
     color: var(--color-text-main);
-    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), 'Cinzel', 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+    letter-spacing: -0.01em;
   }
 }

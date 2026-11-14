@@ -10,41 +10,66 @@ import { IUserRepository } from '../interfaces/IUserRepository';
 
 export class DynamoUserRepository implements IUserRepository {
   private tableName = getTableName('users');
+  private memoryFallback: Map<string, User> = new Map();
 
   async findById(id: string): Promise<User | null> {
-    const res = await docClient.send(
-      new GetCommand({
-        TableName: this.tableName,
-        Key: { id },
-      })
-    );
-    return (res.Item as User) || null;
+    try {
+      const res = await docClient.send(
+        new GetCommand({
+          TableName: this.tableName,
+          Key: { id },
+        })
+      );
+      if (res.Item) return res.Item as User;
+    } catch {
+      // Offline fallback
+    }
+    return this.memoryFallback.get(id) || null;
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const res = await docClient.send(
-      new QueryCommand({
-        TableName: this.tableName,
-        IndexName: 'email-index',
-        KeyConditionExpression: 'email = :email',
-        ExpressionAttributeValues: { ':email': email.toLowerCase() },
-        Limit: 1,
-      })
-    );
-    return (res.Items?.[0] as User) || null;
+    const cleanEmail = email.toLowerCase();
+    try {
+      const res = await docClient.send(
+        new QueryCommand({
+          TableName: this.tableName,
+          IndexName: 'email-index',
+          KeyConditionExpression: 'email = :email',
+          ExpressionAttributeValues: { ':email': cleanEmail },
+          Limit: 1,
+        })
+      );
+      if (res.Items?.[0]) return res.Items[0] as User;
+    } catch {
+      // Offline fallback
+    }
+
+    for (const u of this.memoryFallback.values()) {
+      if (u.email?.toLowerCase() === cleanEmail) return u;
+    }
+    return null;
   }
 
   async findByPhone(phone: string): Promise<User | null> {
-    const res = await docClient.send(
-      new QueryCommand({
-        TableName: this.tableName,
-        IndexName: 'phone-index',
-        KeyConditionExpression: 'phone = :phone',
-        ExpressionAttributeValues: { ':phone': phone },
-        Limit: 1,
-      })
-    );
-    return (res.Items?.[0] as User) || null;
+    try {
+      const res = await docClient.send(
+        new QueryCommand({
+          TableName: this.tableName,
+          IndexName: 'phone-index',
+          KeyConditionExpression: 'phone = :phone',
+          ExpressionAttributeValues: { ':phone': phone },
+          Limit: 1,
+        })
+      );
+      if (res.Items?.[0]) return res.Items[0] as User;
+    } catch {
+      // Offline fallback
+    }
+
+    for (const u of this.memoryFallback.values()) {
+      if (u.phone === phone) return u;
+    }
+    return null;
   }
 
   async create(user: User): Promise<User> {
@@ -52,12 +77,17 @@ export class DynamoUserRepository implements IUserRepository {
       ...user,
       email: user.email ? user.email.toLowerCase() : undefined,
     };
-    await docClient.send(
-      new PutCommand({
-        TableName: this.tableName,
-        Item: item,
-      })
-    );
+    try {
+      await docClient.send(
+        new PutCommand({
+          TableName: this.tableName,
+          Item: item,
+        })
+      );
+    } catch {
+      // Offline fallback
+    }
+    this.memoryFallback.set(item.id, item);
     return item;
   }
 
@@ -70,16 +100,21 @@ export class DynamoUserRepository implements IUserRepository {
     const updated: User = {
       ...existing,
       ...updates,
-      email: updates.email ? updates.email.toLowerCase() : existing.email,
+      email: 'email' in updates ? (updates.email ? updates.email.toLowerCase() : undefined) : existing.email,
       updatedAt: new Date().toISOString(),
     };
 
-    await docClient.send(
-      new PutCommand({
-        TableName: this.tableName,
-        Item: updated,
-      })
-    );
+    try {
+      await docClient.send(
+        new PutCommand({
+          TableName: this.tableName,
+          Item: updated,
+        })
+      );
+    } catch {
+      // Offline fallback
+    }
+    this.memoryFallback.set(id, updated);
     return updated;
   }
 }

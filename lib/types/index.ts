@@ -222,10 +222,13 @@ export const AuditLogSchema = z.object({
   id: z.string().uuid(),
   entityType: z.string(), // 'product' | 'order' | 'coupon' | 'setting'
   entityId: z.string(),
-  action: z.string(),     // 'CREATE' | 'UPDATE' | 'DELETE' | 'STATUS_CHANGE'
+  action: z.string(),     // 'CREATE' | 'UPDATE' | 'DELETE' | 'STATUS_CHANGE' | 'PRICE_UPDATE' | 'STOCK_UPDATE'
   diff: z.record(z.string(), z.unknown()).optional(),
   actorEmail: z.string(),
   timestamp: z.string().datetime(),
-});
+  previousPrice: z.number().optional(),
+  newPrice: z.number().optional(),
+  staffEmail: z.string().optional(),
+}).passthrough();
 
 export type AuditLog = z.infer<typeof AuditLogSchema>;

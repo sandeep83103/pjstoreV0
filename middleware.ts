@@ -20,13 +20,13 @@ export async function middleware(request: NextRequest) {
         if (isAdminApi) {
           return NextResponse.json(
             { success: false, error: { code: 'FORBIDDEN', message: 'Access denied: Customer account cannot access administrative endpoints.' } },
-            { status: 403 }
+            { status: 403, headers: { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN' } }
           );
         }
         // For customer browsing to /admin, return 403 Forbidden page or message
         return new NextResponse('Access Denied: Customer accounts are not permitted in the Admin Portal.', {
           status: 403,
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'text/plain', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN' },
         });
       }
     }
@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
       if (isAdminApi) {
         return NextResponse.json(
           { success: false, error: { code: 'UNAUTHORIZED', message: 'Administrative authentication required.' } },
-          { status: 401 }
+          { status: 401, headers: { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN' } }
         );
       }
       const loginUrl = new URL('/admin/login', request.url);
@@ -50,14 +50,17 @@ export async function middleware(request: NextRequest) {
       if (isAdminApi) {
         return NextResponse.json(
           { success: false, error: { code: 'UNAUTHORIZED', message: 'Invalid or expired administrative session.' } },
-          { status: 401 }
+          { status: 401, headers: { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN' } }
         );
       }
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  return response;
 }
 
 export const config = {

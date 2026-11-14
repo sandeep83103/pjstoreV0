@@ -12,7 +12,16 @@
     "setup:dynamo": "tsx scripts/setup-dynamo.ts",
     "seed": "tsx scripts/seed.ts",
     "test:eval-p0": "tsx scripts/test-eval-p0.ts",
-    "test:eval-p1": "tsx scripts/test-eval-p1.ts"
+    "test:eval-p1": "tsx scripts/test-eval-p1.ts",
+    "test:eval-p2": "tsx scripts/test-eval-p2.ts",
+    "test:eval-p3": "tsx scripts/test-eval-p3.ts",
+    "test:eval-p4": "tsx scripts/test-eval-p4.ts",
+    "test:eval-p5": "tsx scripts/test-eval-p5.ts",
+    "test:eval-p6": "tsx scripts/test-eval-p6.ts",
+    "test:eval-p7": "tsx scripts/test-eval-p7.ts",
+    "test:load-stock": "tsx scripts/load-test-stock.ts",
+    "test:smoke-e2e": "tsx scripts/smoke-test-e2e.ts",
+    "backup:tables": "tsx scripts/backup-tables.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.714.0",

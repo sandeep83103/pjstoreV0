@@ -1,41 +1,50 @@
 import React from 'react';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, Award } from 'lucide-react';
+import { productRepository } from '@/lib/data';
+import { ProductCard } from '@/components/storefront/ProductCard';
+
+export const revalidate = 60; // ISR cache for 60 seconds
 
 const CATEGORY_TILES = [
   {
     title: 'One Gram Gold',
     description: 'Long-lasting 24K micron plating with heirloom elegance',
-    href: '/catalog?category=cat-one-gram',
+    href: '/catalog?category=one-gram-gold',
     badge: 'Best Seller',
   },
   {
     title: 'Necklaces & Haars',
     description: 'Traditional temple chokers, gundla haars, and bridal sets',
-    href: '/catalog?category=cat-necklaces',
+    href: '/catalog?category=necklaces',
     badge: 'Popular',
   },
   {
     title: 'Earrings & Jhumkas',
     description: 'Lightweight antique jhumkas with ruby and emerald accents',
-    href: '/catalog?category=cat-earrings',
+    href: '/catalog?category=earrings',
     badge: 'Festive',
   },
   {
     title: 'Bangles & Kadas',
     description: 'Royal filigree openable kadas and daily-wear bangles',
-    href: '/catalog?category=cat-bangles',
+    href: '/catalog?category=bangles',
     badge: 'New',
   },
 ];
 
-export default function StorefrontHomePage() {
+export default async function StorefrontHomePage() {
+  const { items: featuredProducts } = await productRepository.list(
+    { status: 'ACTIVE', inStockOnly: true },
+    8
+  );
+
   return (
     <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[var(--color-primary-base)] to-[var(--color-primary-dark)] text-white py-16 sm:py-24 border-b border-[var(--color-accent-gold)]/30">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]" />
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary-dark)] text-[var(--color-accent-light-gold)] border border-[var(--color-accent-gold)]/40 text-xs font-semibold tracking-wider uppercase mb-6 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-[var(--color-accent-gold)]" />
@@ -53,7 +62,7 @@ export default function StorefrontHomePage() {
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/catalog?category=cat-one-gram"
+              href="/catalog?category=one-gram-gold"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[var(--color-accent-gold)] text-[var(--color-primary-dark)] font-semibold text-sm hover:bg-[var(--color-accent-light-gold)] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               Explore 1-Gram Gold
@@ -107,8 +116,40 @@ export default function StorefrontHomePage() {
         </div>
       </section>
 
+      {/* Handcrafted Featured Arrivals */}
+      {featuredProducts.length > 0 && (
+        <section className="py-12 sm:py-16 bg-white border-t border-stone-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent-gold)]">
+                  Handcrafted In India
+                </span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--color-primary-dark)] mt-1 flex items-center gap-2">
+                  <span>Trending New Arrivals</span>
+                  <Sparkles className="w-5 h-5 text-[var(--color-accent-gold)]" />
+                </h2>
+              </div>
+              <Link
+                href="/catalog"
+                className="text-xs font-semibold text-[var(--color-primary-base)] hover:text-[var(--color-accent-gold)] flex items-center gap-1"
+              >
+                View Complete Catalog
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {featuredProducts.slice(0, 4).map((prod) => (
+                <ProductCard key={prod.id} product={prod} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Craftsmanship Assurance */}
-      <section className="bg-white border-y border-[var(--color-border)] py-12">
+      <section className="bg-[var(--color-surface-ivory)] border-t border-[var(--color-border)] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div className="flex items-start gap-4">

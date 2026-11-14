@@ -215,6 +215,17 @@ const tableDefinitions: TableDefinition[] = [
       ],
     },
   },
+
+  // 9. CARTS
+  {
+    name: 'carts',
+    input: {
+      TableName: getTableName('carts'),
+      BillingMode: 'PAY_PER_REQUEST',
+      KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
+      AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
+    },
+  },
 ];
 
 async function doesTableExist(tableName: string): Promise<boolean> {
