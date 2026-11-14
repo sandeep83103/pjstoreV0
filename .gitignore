@@ -33,6 +33,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
 # Coverage directory used by tools like istanbul
 coverage/
 *.lcov

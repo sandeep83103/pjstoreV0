@@ -60,11 +60,11 @@ flowchart LR
 Initialize the repository workspace, configure the TypeScript Next.js App Router project, set up AWS DynamoDB and S3 resources in `ap-south-1`, establish data access layer contracts, and implement database bootstrap scripts.
 
 #### Deliverables & Tasks
-- [ ] **0.1 Project Initialization:**
+- [x] **0.1 Project Initialization:**
   - Initialize Next.js 14/15 with TypeScript, Tailwind CSS, ESLint, and Prettier.
   - Establish base directory structure per [architecture.md](file:///d:/PJStore%20V0/Docs/architecture.md#21-route-structure--rendering-strategy).
   - Configure environment variable schema and validator using `zod` (`lib/env.ts`).
-- [ ] **0.2 AWS Infrastructure Setup & Resource Isolation (`ap-south-1`):**
+- [x] **0.2 AWS Infrastructure Setup & Resource Isolation (`ap-south-1`):**
   - Create dedicated S3 Bucket `parnika-jewellers-v0-<env>` with Block All Public Access enabled.
   - Ensure zero interference with other buckets in the AWS account: verify scoped IAM policy restricts access strictly to `arn:aws:s3:::parnika-jewellers-v0-*` and `arn:aws:dynamodb:ap-south-1:*:table/parnika_*`.
   - Configure dedicated CloudFront distribution with Origin Access Control (OAC) targeting only this S3 bucket.
@@ -77,12 +77,12 @@ Initialize the repository workspace, configure the TypeScript Next.js App Router
     - `parnika_payments` (PK: `id`, GSIs: `orderId`, `providerRef`)
     - `parnika_settings` (PK: `key`)
     - `parnika_audit_logs` (PK: `id`, GSI: `entityId-timestamp`)
-- [ ] **0.3 Data Access Layer Abstraction:**
+- [x] **0.3 Data Access Layer Abstraction:**
   - Build DynamoDB singleton client with `@aws-sdk/client-dynamodb` and `@aws-sdk/lib-dynamodb`.
   - Author repository interfaces in `lib/data/interfaces/`:
     - `IProductRepository`, `ICategoryRepository`, `IOrderRepository`, `IUserRepository`, `ICouponRepository`, `IPaymentRepository`.
   - Author DynamoDB repository implementations in `lib/data/dynamodb/`.
-- [ ] **0.4 Database Provisioning & Seed Scripts:**
+- [x] **0.4 Database Provisioning & Seed Scripts:**
   - `scripts/setup-dynamo.ts`: Programmatically creates all tables and GSIs with required attribute definitions.
   - `scripts/seed.ts`: Seeds initial categories (Fashion Jewellery, One Gram Gold, Necklaces, Earrings, Bangles, Rings, Bridal Sets) and sample jewellery items.
 
