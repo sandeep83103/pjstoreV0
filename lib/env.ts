@@ -9,8 +9,8 @@ if (typeof window === 'undefined') {
 const envSchema = z.object({
   // AWS Configuration (ap-south-1 Mumbai)
   AWS_REGION: z.string().default('ap-south-1'),
-  AWS_ACCESS_KEY_ID: z.string().min(1, 'AWS_ACCESS_KEY_ID is required'),
-  AWS_SECRET_ACCESS_KEY: z.string().min(1, 'AWS_SECRET_ACCESS_KEY is required'),
+  AWS_ACCESS_KEY_ID: z.string().optional().default(''),
+  AWS_SECRET_ACCESS_KEY: z.string().optional().default(''),
   DYNAMO_TABLE_PREFIX: z.string().default('parnika_'),
   S3_BUCKET_NAME: z.string().default('parnika-jewellers-v0-prod'),
   CLOUDFRONT_DISTRIBUTION_DOMAIN: z.string().optional().default('assets.pjstore.com'),
