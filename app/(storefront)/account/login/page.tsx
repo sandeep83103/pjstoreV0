@@ -129,7 +129,7 @@ export default function CustomerLoginPage() {
             />
           </div>
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#4A1118]">
-            Welcome to Parnika Jeweller
+            Welcome to Parnika Jewellers
           </h2>
           <p className="text-xs text-[#5E4A4C] mt-1.5">
             Log in to manage orders, saved addresses, and jewellery wishlists.
