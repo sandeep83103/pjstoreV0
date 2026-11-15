@@ -165,7 +165,11 @@ export default function CartPage() {
             {/* Items Card List */}
             <div className="bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden divide-y divide-stone-100">
               {items.map((item) => {
-                const imageUrl = item.imageKey ? getCloudFrontAssetUrl(item.imageKey) : '/brand/logo.png';
+                const imageUrl = item.imageKey
+                  ? item.imageKey.startsWith('/')
+                    ? item.imageKey
+                    : getCloudFrontAssetUrl(item.imageKey)
+                  : '/brand/crest.jpg';
                 return (
                   <div
                     key={`${item.productId}-${item.variantId || 'default'}`}

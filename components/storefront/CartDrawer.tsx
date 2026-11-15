@@ -141,7 +141,11 @@ export function CartDrawer() {
               </div>
             ) : (
               items.map((item) => {
-                const imageUrl = item.imageKey ? getCloudFrontAssetUrl(item.imageKey) : '/brand/logo.png';
+                const imageUrl = item.imageKey
+                  ? item.imageKey.startsWith('/')
+                    ? item.imageKey
+                    : getCloudFrontAssetUrl(item.imageKey)
+                  : '/brand/crest.jpg';
                 return (
                   <div
                     key={`${item.productId}-${item.variantId || 'default'}`}

@@ -1,20 +1,41 @@
-/* Brand Theme Tokens — Parnika Jewellers (aligned with parnika-jewellers-store.html) */
+/* Brand Theme Tokens — Parnika Jewellers
+   Directly derived from parnika-jewellers-store.html */
 :root {
-  --color-bg-main: #080706;             /* Deep Onyx Black */
-  --color-bg-card: #110F0C;             /* Luxury Dark Card Surface */
-  --color-bg-card-hover: #171410;       /* Card Hover Tint */
-  --color-primary-base: #080706;        /* Storefront Primary Background */
-  --color-primary-dark: #050404;        /* Deepest Dark for Drawer & Modals */
-  --color-accent-gold: #D4AF37;         /* Royal Temple Gold */
-  --color-accent-light-gold: #FBE8A6;   /* Champagne / Shimmer Gold */
-  --color-accent-dark-gold: #AA7C11;    /* Deep Antique Gold */
-  --color-ruby-alert: #9B111E;          /* Ruby Red Badges & Offers */
-  --color-emerald-accent: #25D366;      /* WhatsApp / Trust Green */
-  --color-surface-ivory: #080706;       /* Storefront Dark Surface */
-  --color-text-main: #F5EFEB;           /* Warm Ivory Text */
-  --color-text-muted: #CBB99F;          /* Sand Gold / Muted Subtext */
-  --color-border: rgba(212, 175, 55, 0.2); /* Subtle Gold Border */
-  --color-border-strong: rgba(212, 175, 55, 0.45); /* Highlight Gold Border */
-  --font-display: 'Cormorant Garamond', serif;
-  --font-sans: 'Jost', sans-serif;
+  /* Brand Heritage Maroon */
+  --m: #7A262D;                         /* Brand Maroon, sampled from brand crest */
+  --m2: #4A1118;                        /* Deep Maroon */
+  --m3: #2E0A0F;                        /* Darkest Maroon (storefront background) */
+
+  /* Temple Gold Shimmer */
+  --gold: #D4AF5A;                      /* Rich Temple Gold */
+  --gold-l: #E9D08A;                    /* Light Gold Shimmer */
+  --gold-d: #8A6A22;                    /* Antique Deep Gold Border */
+
+  /* Silk Creams & Surfaces */
+  --cream: #F7F0DE;                     /* Ivory Silk Surface */
+  --cream-d: #E4D7C0;                   /* Muted Silk Cream */
+  --line: #E6D7B4;                      /* Warm Gold Divider Line */
+
+  /* Typography Colors */
+  --text: #2B1316;                      /* High-Contrast Deep Maroon Text */
+  --muted: #5E4A4C;                     /* Subtle Muted Description Text */
+
+  /* Aliased System Colors for Components */
+  --color-primary-base: #7A262D;
+  --color-primary-dark: #2E0A0F;
+  --color-accent-gold: #D4AF5A;
+  --color-accent-light-gold: #E9D08A;
+  --color-ruby-alert: #9B111E;
+  --color-emerald-accent: #25D366;
+  --color-surface-ivory: #F7F0DE;
+  --color-text-main: #F7F0DE;
+  --color-text-muted: #E4D7C0;
+  --color-border: #8A6A22;
+  --color-border-strong: #D4AF5A;
+
+  /* Typography Variables */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Jost', system-ui, sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', system-ui, sans-serif;
 }

@@ -576,7 +576,11 @@ export default function CheckoutPage() {
             </h2>
             <div className="space-y-3 divide-y divide-stone-100">
               {items.map((item) => {
-                const imageUrl = item.imageKey ? getCloudFrontAssetUrl(item.imageKey) : '/brand/logo.png';
+                const imageUrl = item.imageKey
+                  ? item.imageKey.startsWith('/')
+                    ? item.imageKey
+                    : getCloudFrontAssetUrl(item.imageKey)
+                  : '/brand/crest.jpg';
                 return (
                   <div key={`${item.productId}-${item.variantId || 'default'}`} className="pt-3 first:pt-0 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">

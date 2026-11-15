@@ -65,15 +65,15 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
 
   const pageDescription = selectedCategory
     ? `Explore our signature collection of ${selectedCategory.name.toLowerCase()} handcrafted in 1-gram gold and traditional temple finishes.`
-    : 'Browse exquisite one-gram gold jewellery, antique temple sets, jhumkas, chokers, and bangles.';
+    : 'Browse exquisite one-gram gold jewellery, antique temple sets, long harams, jhumkas, and bridal sets.';
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface-ivory)]/40 pb-16">
-      {/* Category Hero / Header */}
-      <div className="bg-gradient-to-r from-[var(--color-primary-base)] to-[var(--color-primary-dark)] text-white py-10 sm:py-14 border-b border-[var(--color-accent-gold)]/20">
+    <div className="min-h-screen bg-[#F7F0DE] text-[#2B1316] pb-20">
+      {/* Category Hero Banner (Maroon Damask from parnika-jewellers-store.html) */}
+      <div className="tex-m text-[#F7F0DE] py-12 sm:py-16 border-b-2 border-[#D4AF5A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb Navigation */}
-          <nav className="flex items-center gap-1.5 text-xs text-[var(--color-accent-light-gold)]/70 mb-4" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-1.5 text-xs text-[#E9D08A] mb-4" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-white transition-colors">
               Home
             </Link>
@@ -89,18 +89,25 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             )}
           </nav>
 
-          <h1 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-            <span>{pageTitle}</span>
-            <Sparkles className="w-5 h-5 text-[var(--color-accent-gold)] shrink-0" />
-          </h1>
-          <p className="mt-2 text-xs sm:text-sm text-white/80 max-w-2xl font-light">
-            {pageDescription}
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="eyebrow text-xs tracking-[0.25em] uppercase text-[#E9D08A] font-semibold mb-1">
+                Parnika Signature
+              </div>
+              <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#F7F0DE] flex items-center gap-3">
+                <span>{pageTitle}</span>
+                <Sparkles className="w-5 h-5 text-[#D4AF5A] shrink-0" />
+              </h1>
+              <p className="mt-2 text-sm text-[#E4D7C0] max-w-2xl font-light">
+                {pageDescription}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main Catalog Workspace */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar Filters */}
           <CatalogFilters categories={categories} totalProducts={products.length} />
@@ -108,27 +115,27 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           {/* Product Grid Area */}
           <main className="flex-1 w-full">
             {products.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-stone-200 p-12 text-center my-6 shadow-sm">
-                <div className="p-4 rounded-full bg-amber-50 text-[var(--color-accent-gold)] inline-flex mb-4">
+              <div className="bg-white rounded-sm border border-[#E6D7B4] border-t-4 border-t-[#7A262D] p-12 text-center my-6 shadow-sm">
+                <div className="p-4 rounded-full bg-[#F7F0DE] text-[#D4AF5A] inline-flex mb-4 border border-[#D4AF5A]">
                   <PackageSearch className="w-8 h-8" />
                 </div>
-                <h3 className="font-display text-lg font-bold text-[var(--color-primary-dark)]">
+                <h3 className="font-serif text-2xl font-bold text-[#4A1118]">
                   No Jewellery Found
                 </h3>
-                <p className="text-xs text-stone-500 mt-2 max-w-md mx-auto">
+                <p className="text-xs text-[#5E4A4C] mt-2 max-w-md mx-auto">
                   We couldn’t find any pieces matching your chosen filter criteria. Try adjusting your price range or clearing filters to discover more items.
                 </p>
                 <div className="mt-6">
                   <Link
                     href="/catalog"
-                    className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[var(--color-primary-base)] text-[var(--color-accent-light-gold)] text-xs font-semibold hover:bg-[var(--color-primary-dark)] transition-all shadow"
+                    className="inline-flex items-center justify-center px-6 py-2.5 bg-[#7A262D] text-[#F7F0DE] hover:bg-[#2E0A0F] hover:text-[#E9D08A] text-xs font-semibold uppercase tracking-wider transition shadow"
                   >
                     Reset All Filters
                   </Link>
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-6">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

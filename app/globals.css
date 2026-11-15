@@ -1,5 +1,5 @@
 @import '../styles/tokens.css';
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,103 +7,152 @@
 
 @layer base {
   body {
-    background-color: var(--color-bg-main);
-    color: var(--color-text-main);
-    font-family: var(--font-sans), 'Jost', sans-serif;
+    background-color: var(--m3);
+    color: var(--cream);
+    font-family: var(--font-sans), 'Jost', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), 'Cormorant Garamond', serif;
+    font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
     letter-spacing: -0.01em;
   }
 }
 
+/* Maroon damask texture surfaces (from parnika-jewellers-store.html) */
+.tex {
+  background-color: var(--m);
+  background-image: url('/brand/texture.jpg');
+  background-size: 420px;
+}
+
+.tex-m {
+  background-color: var(--m);
+  background-image: linear-gradient(rgba(46, 10, 15, 0.38), rgba(46, 10, 15, 0.38)), url('/brand/texture.jpg');
+  background-size: auto, 420px;
+}
+
+.tex-d {
+  background-color: var(--m2);
+  background-image: linear-gradient(rgba(46, 10, 15, 0.68), rgba(46, 10, 15, 0.68)), url('/brand/texture.jpg');
+  background-size: auto, 420px;
+}
+
+.tex-dd {
+  background-color: var(--m3);
+  background-image: linear-gradient(rgba(31, 7, 11, 0.84), rgba(31, 7, 11, 0.84)), url('/brand/texture.jpg');
+  background-size: auto, 420px;
+}
+
 /* Gold Shimmer Text */
 .gold-gradient {
-  background: linear-gradient(135deg, #FBE8A6 0%, #D4AF37 50%, #AA7C11 100%);
+  background: linear-gradient(135deg, #FBE8A6 0%, #D4AF5A 50%, #8A6A22 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gold-gradient-soft {
-  background: linear-gradient(135deg, #FFFDF8 0%, #E8D8A6 60%, #C49E35 100%);
+  background: linear-gradient(135deg, #FFFDF8 0%, #E9D08A 60%, #8A6A22 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* Gold Borders */
 .border-gold {
-  border-color: rgba(212, 175, 55, 0.25);
+  border-color: var(--gold);
 }
 
-.border-gold-strong {
-  border-color: rgba(212, 175, 55, 0.5);
+.border-gold-d {
+  border-color: var(--gold-d);
 }
 
-/* Luxury Cards */
-.bg-card {
-  background: #110F0C;
-  border: 1px solid rgba(212, 175, 55, 0.18);
-}
-
-.bg-card-hover:hover {
-  border-color: rgba(212, 175, 55, 0.5);
-  transform: translateY(-3px);
-  transition: all 0.3s ease;
-}
-
-/* Luxury Buttons */
+/* Buttons from parnika-jewellers-store.html */
 .btn-gold {
-  background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
-  color: #080706;
+  background: var(--gold);
+  color: var(--m3);
+  padding: 14px 28px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 14px rgba(212, 175, 90, 0.25);
 }
 
 .btn-gold:hover {
-  background: linear-gradient(135deg, #FBE8A6 0%, #D4AF37 100%);
-  box-shadow: 0 6px 26px rgba(212, 175, 55, 0.45);
+  color: var(--m3);
+  background: var(--gold-l);
+  box-shadow: 0 6px 20px rgba(212, 175, 90, 0.4);
   transform: translateY(-1px);
 }
 
-.btn-outline {
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #F5EFEB;
-  letter-spacing: 0.08em;
+.btn-line {
+  border: 1px solid var(--gold);
+  color: var(--gold-l);
+  padding: 14px 28px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
+  transition: all 0.3s ease;
 }
 
-.btn-outline:hover {
-  border-color: #D4AF37;
-  background: rgba(212, 175, 55, 0.08);
-  color: #FBE8A6;
+.btn-line:hover {
+  background: rgba(212, 175, 90, 0.15);
+  color: #FFFFFF;
+  border-color: var(--gold-l);
+}
+
+/* Product Card from parnika-jewellers-store.html */
+.pcard {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--m);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(74, 17, 24, 0.08);
+  transition: all 0.3s ease;
+}
+
+.pcard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(74, 17, 24, 0.18);
+  border-color: var(--gold);
+  border-top-color: var(--m);
+}
+
+/* Badge Gold */
+.badge-gold {
+  background: rgba(212, 175, 90, 0.15);
+  border: 1px solid rgba(212, 175, 90, 0.4);
+  color: var(--gold-l);
 }
 
 /* Glass Header */
 .glass-nav {
-  background: rgba(8, 7, 6, 0.92);
+  background: rgba(46, 10, 15, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  border-bottom: 2px solid var(--gold);
 }
 
 /* Announcement Ticker */
-.ticker-bg {
-  background: linear-gradient(90deg, #1A1308 0%, #2A1F0D 50%, #1A1308 100%);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
-}
-
-/* Product Card Badge */
-.badge-gold {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #FBE8A6;
+.announce-ticker {
+  background: var(--gold);
+  color: var(--m3);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 13px;
 }

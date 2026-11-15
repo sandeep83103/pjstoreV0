@@ -20,6 +20,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   const getFullUrl = (key: string) => {
     if (key.startsWith('http')) return key;
+    if (key.startsWith('/')) return key;
     if (key.startsWith('brand/')) return `/${key}`;
     return getCloudFrontAssetUrl(key);
   };
