@@ -1,8 +1,9 @@
 # Comprehensive Step-by-Step Usage Guide — Parnika Jewellers
 
 > **Target Platform:** Next.js 14 (App Router, TypeScript) • Amazon DynamoDB • Amazon S3 • Amazon CloudFront • YOUPI PG / Licensed Gateway  
-> **Brand Identity:** Emerald Green (`#0B3B24`), Royal Temple Gold (`#D4AF37`), Ruby Red (`#9B111E`), Neutral Ivory (`#FCFBF7`)  
-> **Compliance:** Indian GST (HSN 7117) • Digital Personal Data Protection (DPDP) Act 2023  
+> **Brand Identity:** Deep Silk Maroon (`#7A262D`), Velvet Maroon (`#4A1118`), Temple Gold (`#D4AF5A`), Champagne Gold (`#E9D08A`), Warm Silk Creams (`#F7F0DE`), Neutral Ivory  
+> **Brand Assets:** Heritage Crest (`/brand/crest.jpg`), Signature Brand Emblem (`/brand/emblem.webp`), Damask Silk Texture (`/brand/texture.jpg`)  
+> **Compliance:** Indian GST (HSN 7117, GSTIN: 27AAAAA0000A1Z5) • Digital Personal Data Protection (DPDP) Act 2023  
 > **Documentation Suite:** [Docs/architecture.md](Docs/architecture.md) • [Docs/implementationplan.md](Docs/implementationplan.md) • [Docs/evals.md](Docs/evals.md) • [Docs/production-cutover.md](Docs/production-cutover.md)
 
 ---
@@ -10,17 +11,23 @@
 ## Table of Contents
 
 1. [System Overview & Architecture Tenets](#1-system-overview--architecture-tenets)
-2. [Environment Configuration & Initial Bootstrap](#2-environment-configuration--initial-bootstrap)
+2. [Environment Configuration, Initial Bootstrap & Viewing Outputs](#2-environment-configuration-initial-bootstrap--viewing-outputs)
+   - [2.1 Prerequisites](#21-prerequisites)
+   - [2.2 Environment Variables Setup](#22-environment-variables-setup)
+   - [2.3 Database Provisioning & DBI Catalog Seeding](#23-database-provisioning--dbi-catalog-seeding)
+   - [2.4 Step-by-Step Instructions to View Outputs](#24-step-by-step-instructions-to-view-outputs)
 3. [Customer Storefront Workflows](#3-customer-storefront-workflows)
-   - [3.1 Browsing & Multi-Faceted Catalog Filtering](#31-browsing--multi-faceted-catalog-filtering)
-   - [3.2 Product Detail Page (PDP) & Image Gallery](#32-product-detail-page-pdp--image-gallery)
-   - [3.3 1-Click WhatsApp Enquiry](#33-1-click-whatsapp-enquiry)
-   - [3.4 Persistent Cart & Real-Time Stock Clamping](#34-persistent-cart--real-time-stock-clamping)
-   - [3.5 Coupon Engine & Discounts](#35-coupon-engine--discounts)
-   - [3.6 Atomic Checkout & Payment (Dynamic UPI QR / COD)](#36-atomic-checkout--payment-dynamic-upi-qr--cod)
-   - [3.7 Customer Order Tracking & History](#37-customer-order-tracking--history)
-   - [3.8 GST Tax Invoice Download](#38-gst-tax-invoice-download)
-   - [3.9 DPDP Privacy Portal & Data Erasure](#39-dpdp-privacy-portal--data-erasure)
+   - [3.1 Luxury Homepage & Live Gold Rate Ticker](#31-luxury-homepage--live-gold-rate-ticker)
+   - [3.2 Browsing & Multi-Faceted Catalog Filtering](#32-browsing--multi-faceted-catalog-filtering)
+   - [3.3 Product Detail Page (PDP) & Image Gallery](#33-product-detail-page-pdp--image-gallery)
+   - [3.4 1-Click WhatsApp Enquiry](#34-1-click-whatsapp-enquiry)
+   - [3.5 Persistent Cart & Luxury Slide-Out Drawer](#35-persistent-cart--luxury-slide-out-drawer)
+   - [3.6 Coupon Engine & Discounts](#36-coupon-engine--discounts)
+   - [3.7 Customer Login & Account ("Welcome to Parnika Jewellers")](#37-customer-login--account-welcome-to-parnika-jewellers)
+   - [3.8 Atomic Checkout & Payment (Dynamic UPI QR / COD)](#38-atomic-checkout--payment-dynamic-upi-qr--cod)
+   - [3.9 Customer Order Tracking & History](#39-customer-order-tracking--history)
+   - [3.10 GST Tax Invoice Download](#310-gst-tax-invoice-download)
+   - [3.11 DPDP Privacy Portal & Data Erasure](#311-dpdp-privacy-portal--data-erasure)
 4. [Store Administrator & Staff Workflows](#4-store-administrator--staff-workflows)
    - [4.1 Admin Authentication & RBAC](#41-admin-authentication--rbac)
    - [4.2 Real-Time Inventory Dashboard & Low-Stock Alerts](#42-real-time-inventory-dashboard--low-stock-alerts)
@@ -29,9 +36,10 @@
    - [4.5 Order Fulfillment & Packing Slips](#45-order-fulfillment--packing-slips)
    - [4.6 Payment Reconciliation & Observer Health](#46-payment-reconciliation--observer-health)
    - [4.7 Coupon Management](#47-coupon-management)
-5. [Disaster Recovery & Nightly S3 Backups](#5-disaster-recovery--nightly-s3-backups)
-6. [Automated Verification & Test Harnesses](#6-automated-verification--test-harnesses)
-7. [API Reference & Payload Examples](#7-api-reference--payload-examples)
+5. [Recommended Production Hosting & Deployment (AWS Mumbai ap-south-1)](#5-recommended-production-hosting--deployment-aws-mumbai-ap-south-1)
+6. [Disaster Recovery & Nightly S3 Backups](#6-disaster-recovery--nightly-s3-backups)
+7. [Automated Verification & Test Harnesses](#7-automated-verification--test-harnesses)
+8. [API Reference & Payload Examples](#8-api-reference--payload-examples)
 
 ---
 
@@ -43,12 +51,12 @@ Parnika Jewellers Online Store is engineered specifically for premium fashion an
 2. **Zero-Oversell Guarantee:** All inventory decrements execute through DynamoDB conditional atomic update expressions (`stock >= :qty` inside `TransactWriteItems`). Race conditions during flash sales halt safely before payment capture.
 3. **Pluggable Payments:** All payment flows interface with a unified `IPaymentProvider` contract. The self-hosted YOUPI PG (V2) gateway handles dynamic UPI QR generation, while an official Razorpay adapter acts as a zero-downtime fallback.
 4. **Direct Media Pipeline:** Administrative image uploads stream directly from the browser to Amazon S3 via short-lived pre-signed PUT URLs, completely bypassing the Next.js application server.
-5. **Mobile-First Luxury Performance:** Designed for mobile shoppers on 4G/3G networks, featuring responsive WebP/AVIF images, CSS token architecture, pre-rendered static catalog routes, and target Lighthouse Mobile scores $\ge 85$.
+5. **Mobile-First Luxury Performance:** Designed for mobile shoppers on 4G/3G networks, featuring responsive WebP/AVIF images, authentic damask silk CSS patterns, pre-rendered static catalog routes, and target Lighthouse Mobile scores $\ge 85$.
 6. **Statutory Tax & Privacy Compliance:** Automated Indian GST invoice generator (HSN 7117, CGST 1.5% + SGST 1.5% or IGST 3%) and full compliance with the Digital Personal Data Protection (DPDP) Act 2023.
 
 ---
 
-## 2. Environment Configuration & Initial Bootstrap
+## 2. Environment Configuration, Initial Bootstrap & Viewing Outputs
 
 ### 2.1 Prerequisites
 - **Node.js:** v18.17+ or v20+ (Node.js 20+ recommended)
@@ -81,7 +89,7 @@ Key environment configuration properties:
 | `YOUPI_WEBHOOK_SECRET` | HMAC-SHA256 signature key | `youpi_dev_webhook_secret_key_32_bytes` |
 | `YOUPI_MERCHANT_UPI_HANDLE` | Store UPI VPA for dynamic QR generation | `parnikajewellers@icici` |
 
-### 2.3 Database Provisioning & Catalog Seeding
+### 2.3 Database Provisioning & DBI Catalog Seeding
 
 Execute the automated database setup and initial data seeding:
 
@@ -89,13 +97,13 @@ Execute the automated database setup and initial data seeding:
 # 1. Create all 8 DynamoDB tables and Global Secondary Indexes (GSIs)
 npm run setup:dynamo
 
-# 2. Seed default categories, sample handcrafted jewellery, and default coupons
+# 2. Seed authentic DBI catalogue items (Long Harams, Temple Sets, Ruby & Emerald Pieces)
 npm run seed
 ```
 
 Tables initialized with the `parnika_` prefix:
 - `parnika_products`: Main catalog items, jewellery specs, stock counts, and S3 image keys.
-- `parnika_categories`: Hierarchical category taxonomy (One-Gram Gold, Necklaces, Earrings, Bangles, Bridal Sets).
+- `parnika_categories`: Hierarchical category taxonomy (Long Haram Sets, Bridal & Temple, Ruby & Emerald, Floral & Layered).
 - `parnika_orders`: Transactional orders with items snapshot, courier tracking, and payment status.
 - `parnika_users`: Customer profiles, phone numbers, addresses, and DPDP status.
 - `parnika_coupons`: Active promotion codes, minimum cart rules, and usage counters.
@@ -103,27 +111,72 @@ Tables initialized with the `parnika_` prefix:
 - `parnika_settings`: Key-value store for global settings and tax identifiers.
 - `parnika_audit_logs`: Immutable audit trail for pricing changes, stock overrides, and administrative mutations.
 
-### 2.4 Running the Application
+### 2.4 Step-by-Step Instructions to View Outputs
 
-```bash
-# Start Next.js development server
-npm run dev
+You can view and test the application using two different methods:
 
-# Open in browser
-open http://localhost:3000
-```
+#### Option A: Running the Full-Stack Next.js Application (Live Store)
+This is the complete interactive webstore with database connectivity, API routes, cart drawer, checkout, and admin panel.
+
+1. **Start the Next.js development server:**
+   ```bash
+   npm run dev
+   ```
+2. **Open the browser URLs:**
+   - **Storefront Homepage:** [http://localhost:3000](http://localhost:3000)
+   - **Catalog Browser:** [http://localhost:3000/catalog](http://localhost:3000/catalog)
+   - **Customer Login Page:** [http://localhost:3000/account/login](http://localhost:3000/account/login)
+   - **Admin Management Portal:** [http://localhost:3000/admin](http://localhost:3000/admin)  
+     *(Log in with `admin@pjstore.com` / `AdminParnika@2026`)*
+   - **DPDP Privacy Rights Portal:** [http://localhost:3000/privacy](http://localhost:3000/privacy)
+
+#### Option B: Standalone Offline Visual Prototype
+If you want to view the standalone, single-file HTML benchmark without starting Node.js or a server:
+
+1. **Directly open in your default browser:**
+   - On Windows PowerShell:
+     ```powershell
+     Start-Process "parnika-jewellers-store.html"
+     ```
+   - On macOS:
+     ```bash
+     open parnika-jewellers-store.html
+     ```
+2. **Or serve via static local server:**
+   ```bash
+   npx serve . -p 8080
+   ```
+   Then navigate to [http://localhost:8080/parnika-jewellers-store.html](http://localhost:8080/parnika-jewellers-store.html).
 
 ---
 
 ## 3. Customer Storefront Workflows
 
-### 3.1 Browsing & Multi-Faceted Catalog Filtering
-Navigate to the storefront at `/` or `/catalog`.
+### 3.1 Luxury Homepage & Live Gold Rate Ticker
+The homepage at `/` incorporates royal Indian jewellery aesthetics:
 
-- **Category Switching:** Click on category chips (e.g. *One Gram Gold*, *Necklaces & Haars*, *Temple Earrings & Jhumkas*, *Royal Bangles & Kadas*, *Complete Bridal Sets*).
+- **Top Announcement Bar:** Displays the live 24K gold rate (`₹6,840/g`), free insured delivery disclosure across India, and direct WhatsApp concierge support.
+- **Sticky Frosted Glass Navbar (`.glass-nav`):** Contains the circular royal crest avatar, catalog navigation, live search bar, wishlist counter, and cart drawer launcher.
+- **Hero Section:** Features a high-contrast royal showcase with dual action buttons (`.btn-gold` "Explore Collection" and `.btn-line` "Custom Bridal Orders") and a floating royal crest badge.
+- **Shop by Style 4-Category Grid:**
+  1. *Long Haram Sets* — Grand 3-line and temple harams.
+  2. *Bridal & Temple* — Heritage nakshi and goddess motifs.
+  3. *Ruby & Emerald* — Kemp stone, teardrop and leaf designs.
+  4. *Floral & Layered* — Modern layered necklaces and chokers.
+- **Festive Special 20% OFF Bridal Offer:** Highlighted promo box with one-click code copy.
+- **Our Story / Craft Guarantee:** Highlights *Insured Express Shipping*, *48-Hour Inspection & Returns*, and *100% Secure UPI & Card Payments*.
+- **Social Proof Gallery:** Visual photo grid featuring real jewellery sets with `@ParnikaJewellers` badges.
+
+---
+
+### 3.2 Browsing & Multi-Faceted Catalog Filtering
+Navigate to the storefront catalog at `/catalog`:
+
+- **Category Switching:** Click on category chips (e.g. *Long Haram Sets*, *Bridal & Temple*, *Ruby & Emerald*, *Floral & Layered*).
 - **Price Range Filter:** Use the interactive price slider or preset checkboxes to constrain results (e.g., ₹1,000 – ₹5,000).
 - **Material Finish:** Filter by *Antique Temple Gold*, *Matte 24K Micro Gold*, *Glossy Yellow Gold*, or *Ruby Inlay*.
 - **In-Stock Only:** Toggle "In Stock Only" to filter out out-of-stock pieces.
+- **Authentic DBI SKU Display:** Every product card proudly displays its authentic supplier code (e.g., `DBI-07.1715`, `DBI-10.2360`, `DBI-06.1525`).
 - **Sorting:** Sort by *Price: Low to High*, *Price: High to Low*, or *Newest Arrivals*.
 
 **Example Query URL:**
@@ -133,8 +186,8 @@ http://localhost:3000/catalog?category=cat-necklaces&minPrice=1000&maxPrice=5000
 
 ---
 
-### 3.2 Product Detail Page (PDP) & Image Gallery
-Click any product card or navigate directly to `/product/[slug]` (e.g. `/product/one-gram-gold-necklace`).
+### 3.3 Product Detail Page (PDP) & Image Gallery
+Click any product card or navigate directly to `/product/[slug]` (e.g. `/product/one-gram-gold-necklace`):
 
 1. **High-Resolution Gallery & Desktop Zoom:** Hover your cursor over the primary photo to trigger magnification; click thumbnail cards to switch gallery angles.
 2. **Transparent Jewellery Specifications Table:** Displays Base Metal (`Copper Alloy`), Plating (`24K Micro Gold`), Finish, Weight, and Polish Warranty details.
@@ -142,10 +195,10 @@ Click any product card or navigate directly to `/product/[slug]` (e.g. `/product
 
 ---
 
-### 3.3 1-Click WhatsApp Enquiry
-Jewellery shoppers frequently ask about custom sizing or matching sets before buying:
+### 3.4 1-Click WhatsApp Enquiry
+Jewellery shoppers frequently ask about custom sizing, matching bangles, or video consultations before buying:
 
-1. On the product detail page, click the emerald **"Enquire on WhatsApp"** button.
+1. On the product detail page, click the gold/emerald **"Enquire on WhatsApp"** button.
 2. The browser launches WhatsApp with an automatically pre-filled, strictly URL-encoded message containing:
    - Product Name
    - SKU & Supplier Code
@@ -153,23 +206,25 @@ Jewellery shoppers frequently ask about custom sizing or matching sets before bu
    - Live URL link
 3. **URL Pattern:**
    ```
-   https://wa.me/919876543210?text=Hi%20Parnika%20Jewellers%2C%20I%20am%20interested%20in%20Royal%20Heritage%20Temple%20Choker%20(SKU%3A%20PJ-NK-101%2C%20Price%3A%20%E2%82%B93%2C499).%20Is%20it%20available%3F%20http%3A%2F%2Flocalhost%3A3000%2Fproduct%2Froyal-heritage-temple-choker
+   https://wa.me/919876543210?text=Hi%20Parnika%20Jewellers%2C%20I%20am%20interested%20in%20Antique%20Gold%20Long%20Haram%20Set%20(SKU%3A%20DBI-07.1715%2C%20Price%3A%20%E2%82%B93%2C499).%20Is%20it%20available%3F%20http%3A%2F%2Flocalhost%3A3000%2Fproduct%2Fone-gram-gold-necklace
    ```
 
 ---
 
-### 3.4 Persistent Cart & Real-Time Stock Clamping
-Click **"Add to Cart"** or **"Buy Now"**:
+### 3.5 Persistent Cart & Luxury Slide-Out Drawer
+Click **"Add to Cart"** or the shopping bag icon in the header:
 
-1. **Guest Cart Persistence:** Cart state is immediately saved to browser `LocalStorage`.
-2. **Logged-In Sync:** When a customer logs in, their guest cart seamlessly merges with `parnika_carts` in DynamoDB without duplicating quantities.
-3. **Real-Time Stock Clamping:** If an item's available inventory drops below the customer's cart quantity (e.g. from an in-store sale), opening `/cart` automatically clamps the line quantity to available stock and alerts the customer:
+1. **Luxury Slide-Out Drawer:** Slides smoothly from the right with damask silk accents.
+2. **Free Shipping Progress Bar:** Shows progress toward the ₹999 free shipping threshold (e.g., *"Add ₹150 more for FREE Insured Express Shipping"*).
+3. **Guest Cart Persistence:** Cart state is immediately saved to browser `LocalStorage`.
+4. **Logged-In Sync:** When a customer logs in, their guest cart seamlessly merges with `parnika_carts` in DynamoDB without duplicating quantities.
+5. **Real-Time Stock Clamping:** If an item's available inventory drops below the customer's cart quantity (e.g. from an in-store sale), opening the cart automatically clamps the line quantity to available stock and alerts the customer:
    > *"Item quantity adjusted to available inventory."*
 
 ---
 
-### 3.5 Coupon Engine & Discounts
-In `/cart` or at `/checkout`:
+### 3.6 Coupon Engine & Discounts
+In `/cart`, the slide-out drawer, or at `/checkout`:
 
 1. Enter a valid coupon code (e.g., `FESTIVE500` or `WELCOME10`) into the promo code field and click **"Apply"**.
 2. **Boundary Validation Rules:**
@@ -181,7 +236,23 @@ In `/cart` or at `/checkout`:
 
 ---
 
-### 3.6 Atomic Checkout & Payment (Dynamic UPI QR / COD)
+### 3.7 Customer Login & Account ("Welcome to Parnika Jewellers")
+Navigate to `/account/login`:
+
+1. **Header & Brand Emblem:** Features the circular royal crest avatar (`/brand/crest.jpg`), heading **"Welcome to Parnika Jewellers"**, and subheading *"Log in to manage orders, saved addresses, and jewellery wishlists."*
+2. **Dual Authentication Tabs:**
+   - **Tab 1: Phone OTP (Fast):**
+     - Mobile Number input with fixed `+91` Indian prefix.
+     - Click **"Send Login OTP"**.
+     - In demo/development environments, a helper hint reveals the active OTP.
+     - Enter 6-digit verification code to log in instantly.
+   - **Tab 2: Email & Password:**
+     - Traditional email and password sign-in with client-side format validation.
+3. **Post-Login State:** Redirects the customer directly to their intended destination (checkout or order history) with an `httpOnly` secure session.
+
+---
+
+### 3.8 Atomic Checkout & Payment (Dynamic UPI QR / COD)
 Navigate to `/checkout` to complete your purchase:
 
 ```mermaid
@@ -226,7 +297,7 @@ sequenceDiagram
 
 ---
 
-### 3.7 Customer Order Tracking & History
+### 3.9 Customer Order Tracking & History
 Access `/account/orders` or direct tracking link `/account/orders/[orderNo]`:
 
 - **Visual Order Progression Bar:**
@@ -236,12 +307,12 @@ Access `/account/orders` or direct tracking link `/account/orders/[orderNo]`:
 
 ---
 
-### 3.8 GST Tax Invoice Download
+### 3.10 GST Tax Invoice Download
 Once an order is marked `PAID` or dispatched:
 
 1. In `/account/orders/[orderNo]`, click **"Download Tax Invoice"** (or make an authenticated call to `GET /api/orders/[id]/invoice`).
 2. The server streams a PDF document (`application/pdf`) conforming to the Central Goods and Services Tax (CGST) Act:
-   - Store GSTIN: `36ABCDE1234F1Z5` (Telangana)
+   - Store GSTIN: `27AAAAA0000A1Z5`
    - Consecutive Invoice Number: `INV-2026-XXXXX`
    - HSN Code: `7117` (Imitation Jewellery)
    - Intra-State: CGST (1.5%) + SGST (1.5%) = 3%
@@ -249,7 +320,7 @@ Once an order is marked `PAID` or dispatched:
 
 ---
 
-### 3.9 DPDP Privacy Portal & Data Erasure
+### 3.11 DPDP Privacy Portal & Data Erasure
 Parnika Jewellers complies fully with the India Digital Personal Data Protection (DPDP) Act 2023.
 
 1. Navigate to the footer link **"Privacy Policy (DPDP Act)"** or visit `/privacy`.
@@ -278,7 +349,7 @@ Navigate to `/admin/login`:
 ### 4.2 Real-Time Inventory Dashboard & Low-Stock Alerts
 Access `/admin/inventory`:
 
-- **Data Table View:** Displays Product Thumbnail, Title, SKU, Supplier Code (e.g. `DBI-102`), Selling Price, Cost Price, Stock Count, and Status toggle (`ACTIVE`, `DRAFT`, `ARCHIVED`).
+- **Data Table View:** Displays Product Thumbnail, Title, SKU, Supplier Code (e.g. `DBI-07.1715`), Selling Price, Cost Price, Stock Count, and Status toggle (`ACTIVE`, `DRAFT`, `ARCHIVED`).
 - **Low-Stock Alert Badges:** Highlights items in ruby red where $\mathtt{stock} \le \mathtt{lowStockAt}$.
 - **Search & Filter:** Search instantly by title, SKU, or supplier code; filter by category or "Low Stock Only".
 
@@ -306,7 +377,7 @@ Click **"Bulk CSV Import"** (`/admin/inventory/bulk`):
    ```
 2. **Example Row:**
    ```csv
-   Royal Temple Choker,PJ-NK-101,DBI-102,cat-necklaces,3499,6999,1750,5,https://assets.pjstore.com/products/choker.webp,Handcrafted 24K 1-gram gold choker.
+   Antique Gold Long Haram Set,PJ-NK-101,DBI-07.1715,cat-necklaces,3499,6999,1750,5,https://assets.pjstore.com/products/p1715.webp,Grand 3-line traditional haram with peacock motifs.
    ```
 3. **Upload & Batch Processing:** The parser validates all rows against Zod schemas, auto-generates missing SKUs, and writes valid items in batches of 25 using DynamoDB `BatchWriteItem`.
 4. **Error Reporting Modal:** If invalid rows exist, a modal lists exact row numbers and validation failure reasons while successfully importing all valid rows.
@@ -368,7 +439,45 @@ Navigate to `/admin/coupons`:
 
 ---
 
-## 5. Disaster Recovery & Nightly S3 Backups
+## 5. Recommended Production Hosting & Deployment (AWS Mumbai ap-south-1)
+
+For hosting `pjstore.com` in production:
+
+### 5.1 Architecture Plan
+```
+                    [ Route 53 / Domain Registrar ]
+                                   │
+                                   ▼
+                       [ AWS CloudFront CDN ]
+                                   │
+             ┌─────────────────────┴─────────────────────┐
+             ▼                                           ▼
+[ AWS Amplify Hosting (ap-south-1) ]        [ Amazon S3 (ap-south-1) ]
+ - Next.js 14 SSR & Server Components       - Media & Invoices
+ - API Route Handlers (/app/api/*)          - CloudFront OAC Protected
+             │
+             ▼
+[ Amazon DynamoDB (ap-south-1) ]
+ - Conditional atomic updates (stock >= :qty)
+ - GSIs on orders, users, coupons
+```
+
+1. **Host Next.js on AWS Amplify Hosting (Mumbai / ap-south-1):**
+   - Supports SSR, ISR, and Route Handlers out-of-the-box.
+   - Zero CORS issues: Next.js API routes (`app/api/*`) serve frontend and backend on the same origin (`pjstore.com`).
+   - Auto-deploys straight from GitHub commits on the `main` branch.
+   - Automated SSL certificates via AWS Certificate Manager (ACM).
+2. **S3 Behind CloudFront OAC:**
+   - Media bucket is completely private. CloudFront Origin Access Control (OAC) signs all image requests.
+3. **Payment Gateway Security:**
+   - Dynamic UPI Webhooks: Only mark orders as `PAID` upon verified HMAC-SHA256 signature from the server-to-server webhook, never relying solely on browser redirects.
+   - Keep all credentials (`YOUPI_WEBHOOK_SECRET`, `JWT_SECRET`) securely in AWS Secrets Manager or Amplify environment variables.
+4. **Turnkey Alternative (Vercel):**
+   - Vercel selecting the Mumbai (`bom1`) region provides zero-config Next.js hosting and connects securely to DynamoDB and S3 in `ap-south-1`.
+
+---
+
+## 6. Disaster Recovery & Nightly S3 Backups
 
 Parnika Jewellers includes an automated backup pipeline to protect customer and inventory records:
 
@@ -398,7 +507,7 @@ aws events put-rule \
 
 ---
 
-## 6. Automated Verification & Test Harnesses
+## 7. Automated Verification & Test Harnesses
 
 The repository includes a comprehensive, phase-by-phase test and evaluation suite defined in [Docs/evals.md](Docs/evals.md):
 
@@ -412,15 +521,15 @@ The repository includes a comprehensive, phase-by-phase test and evaluation suit
 | `npm run test:eval-p4` | Phase 4: Cart & Coupons | Cart sync, coupon boundary rules, atomic stock decrement |
 | `npm run test:eval-p5` | Phase 5: Payments & Webhooks | IPaymentProvider, dynamic UPI QR, COD limit, HMAC webhook |
 | `npm run test:eval-p6` | Phase 6: Orders & Invoicing | Status transitions, GST PDF invoices, tracking, email/WhatsApp |
-| `npm run test:eval-p7` | Phase 7: Hardening & Security | Concurrency stress test, DPDP erasure, S3 backup, E2E smoke |
+| `npm run test:eval-p7` | Phase 7: Hardening & Security | Concurrency stress test, DPDP erasure, S3 backup, E2E smoke (15/15 passed) |
 | `npm run test:load-stock`| Concurrency Stress Test | 20 users competing for 2 items; 50 users across 5 items |
 | `npm run test:smoke-e2e` | End-to-End Smoke Test | Complete customer buying cycle from catalog to invoice |
 
 ---
 
-## 7. API Reference & Payload Examples
+## 8. API Reference & Payload Examples
 
-### 7.1 Checkout Order Placement
+### 8.1 Checkout Order Placement
 **Endpoint:** `POST /api/checkout`
 
 ```bash
@@ -447,7 +556,24 @@ curl -X POST http://localhost:3000/api/checkout \
 
 ---
 
-### 7.2 YOUPI PG Webhook Ingestion
+### 8.2 Customer OTP Send & Verify
+**Endpoints:** `POST /api/account/auth/otp/send` and `POST /api/account/auth/otp/verify`
+
+```bash
+# 1. Send OTP
+curl -X POST http://localhost:3000/api/account/auth/otp/send \
+  -H "Content-Type: application/json" \
+  -d '{ "phone": "9876543210" }'
+
+# 2. Verify OTP and receive JWT session
+curl -X POST http://localhost:3000/api/account/auth/otp/verify \
+  -H "Content-Type: application/json" \
+  -d '{ "phone": "9876543210", "otp": "123456" }'
+```
+
+---
+
+### 8.3 YOUPI PG Webhook Ingestion
 **Endpoint:** `POST /api/payments/webhook/youpi`
 
 ```bash
@@ -470,7 +596,7 @@ curl -X POST http://localhost:3000/api/payments/webhook/youpi \
 
 ---
 
-### 7.3 DPDP Customer Data Erasure Request
+### 8.4 DPDP Customer Data Erasure Request
 **Endpoint:** `POST /api/account/privacy/erasure`
 
 ```bash
