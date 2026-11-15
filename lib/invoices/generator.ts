@@ -12,8 +12,8 @@ export const STORE_GST_CONFIG = {
   stateCode: '36',
   address: 'Shop No. 12, Temple Road, Somajiguda, Hyderabad, Telangana - 500082',
   phone: '+91 98765 43210',
-  email: 'support@pjstore.com',
-  website: 'https://pjstore.com',
+  email: 'support@parnikajewellers.com',
+  website: 'https://www.parnikajewellers.com',
   defaultHsn: '7117', // HSN 7117: Imitation & Fashion Jewellery
   taxRatePercent: 3,  // Standard 3% GST on jewellery
 };

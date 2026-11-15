@@ -18,7 +18,7 @@ function resolveRecipientEmail(order: Order, fallbackEmail?: string): string {
   if (fallbackEmail) return fallbackEmail;
   // If order was placed by customer with email
   const cleanPhone = order.shippingAddress.phone.replace(/[^0-9]/g, '');
-  return `customer-${cleanPhone}@pjstore.com`;
+  return `customer-${cleanPhone}@parnikajewellers.com`;
 }
 
 /**

@@ -58,7 +58,7 @@ export function getWhatsAppEnquiryUrl(
   product: WhatsAppProductDetails,
   customStoreUrl?: string
 ): string {
-  const storeUrl = customStoreUrl || env.NEXT_PUBLIC_STORE_URL || 'https://pjstore.com';
+  const storeUrl = customStoreUrl || env.NEXT_PUBLIC_STORE_URL || 'https://www.parnikajewellers.com';
   const cleanPhone = (env.WHATSAPP_STORE_NUMBER || '+919876543210').replace(/\D/g, '');
   const productUrl = `${storeUrl.replace(/\/+$/, '')}/product/${product.slug}`;
 
@@ -77,7 +77,7 @@ export function getWhatsAppEnquiryUrl(
  * Generate schema.org/Product JSON-LD structured data for SEO.
  */
 export function buildProductJsonLd(product: Product, customStoreUrl?: string) {
-  const storeUrl = customStoreUrl || env.NEXT_PUBLIC_STORE_URL || 'https://pjstore.com';
+  const storeUrl = customStoreUrl || env.NEXT_PUBLIC_STORE_URL || 'https://www.parnikajewellers.com';
   const productUrl = `${storeUrl.replace(/\/+$/, '')}/product/${product.slug}`;
   const imageUrls = product.images.map((img) =>
     img.startsWith('http') ? img : getCloudFrontAssetUrl(img)

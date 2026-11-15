@@ -197,7 +197,7 @@ export default function AdminPaymentsPage() {
               Dynamic UPI Intent &amp; Locked QR
             </p>
             <p className="text-[11px] text-stone-400 mt-1 truncate">
-              {observerStatus?.gatewayApi?.endpoint || 'https://pg.pjstore.com'}
+              {observerStatus?.gatewayApi?.endpoint || 'https://pg.parnikajewellers.com'}
             </p>
           </div>
         </div>

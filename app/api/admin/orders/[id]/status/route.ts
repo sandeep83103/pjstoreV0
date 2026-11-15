@@ -89,7 +89,7 @@ export async function PATCH(
       entityType: 'order',
       entityId: order.id,
       action: 'STATUS_CHANGE',
-      actorEmail: admin.email || 'admin@pjstore.com',
+      actorEmail: admin.email || 'admin@parnikajewellers.com',
       timestamp: new Date().toISOString(),
       diff: {
         previousStatus,

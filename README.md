@@ -71,7 +71,7 @@ Open your browser to:
 - **Customer Storefront:** [http://localhost:3000](http://localhost:3000)
 - **Product Catalog:** [http://localhost:3000/catalog](http://localhost:3000/catalog)
 - **Customer Login:** [http://localhost:3000/account/login](http://localhost:3000/account/login)
-- **Admin Portal:** [http://localhost:3000/admin](http://localhost:3000/admin) (Credentials: `admin@pjstore.com` / `AdminParnika@2026`)
+- **Admin Portal:** [http://localhost:3000/admin](http://localhost:3000/admin) (Credentials: `admin@parnikajewellers.com` / `AdminParnika@2026`)
 
 ### Option B: Standalone HTML Visual Prototype
 The repository includes `parnika-jewellers-store.html`, an all-in-one standalone prototype matching the exact visual benchmark with embedded styles and product assets.
@@ -113,12 +113,12 @@ AWS_ACCESS_KEY_ID=AKIA...
 AWS_SECRET_ACCESS_KEY=...
 DYNAMO_TABLE_PREFIX=parnika_
 S3_BUCKET_NAME=parnika-jewellers-v0-prod
-CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.pjstore.com
+CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.parnikajewellers.com
 JWT_SECRET=your_secure_random_64_character_token_here
-ADMIN_BOOTSTRAP_EMAIL=admin@pjstore.com
+ADMIN_BOOTSTRAP_EMAIL=admin@parnikajewellers.com
 ADMIN_BOOTSTRAP_PASSWORD=AdminParnika@2026
 PAYMENT_PROVIDER=youpi
-YOUPI_BASE_API_URL=https://pg.pjstore.com/api/v2
+YOUPI_BASE_API_URL=https://pg.parnikajewellers.com/api/v2
 YOUPI_WEBHOOK_SECRET=youpi_dev_webhook_secret_key_32_bytes
 YOUPI_MERCHANT_UPI_HANDLE=parnikajewellers@icici
 ```
@@ -162,11 +162,11 @@ npm run seed
 
 ## ☁️ Recommended Deployment Architecture (AWS Mumbai ap-south-1)
 
-For production deployment of `pjstore.com`:
+For production deployment of `www.parnikajewellers.com`:
 
 ```mermaid
 flowchart TD
-    DNS["DNS: pjstore.com (Route 53 or Registrar)"] --> CDN["AWS CloudFront / Edge"]
+    DNS["DNS: www.parnikajewellers.com (GoDaddy / Route 53)"] --> CDN["AWS CloudFront / Edge"]
     CDN --> Amplify["Next.js on AWS Amplify Hosting (ap-south-1 Mumbai)"]
     Amplify --> SSR["Next.js SSR & Server Components"]
     Amplify --> API["API Route Handlers (/app/api/*)"]

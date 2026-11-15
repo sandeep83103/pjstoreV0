@@ -34,7 +34,7 @@ async function runPhase3Evaluations() {
   const adminToken = await signToken(
     {
       userId: 'test-admin-staff-id',
-      email: env.ADMIN_BOOTSTRAP_EMAIL || 'admin@pjstore.com',
+      email: env.ADMIN_BOOTSTRAP_EMAIL || 'admin@parnikajewellers.com',
       role: 'admin',
     },
     '2h'

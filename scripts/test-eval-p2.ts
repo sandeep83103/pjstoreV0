@@ -116,6 +116,7 @@ async function runPhase2Evaluations() {
   const presignedUrl = await getPresignedUploadUrl(sampleKey, 'image/webp', 300);
 
   const isCfUrlValid =
+    cfUrl === 'https://assets.parnikajewellers.com/products/sample-id/test-choker.webp' ||
     cfUrl === 'https://assets.pjstore.com/products/sample-id/test-choker.webp';
   const isPresignedValid =
     presignedUrl.includes(PROJECT_S3_BUCKET) &&

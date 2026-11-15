@@ -93,7 +93,9 @@ async function runPhase0Evaluations() {
   assert(
     'EVAL-P0-06',
     'Dedicated S3 Bucket & CloudFront OAC Asset Resolver',
-    PROJECT_S3_BUCKET === 'parnika-jewellers-v0-prod' && cfUrl.includes('assets.pjstore.com/products/1111/necklace.webp'),
+    PROJECT_S3_BUCKET === 'parnika-jewellers-v0-prod' &&
+      cfUrl.includes('/products/1111/necklace.webp') &&
+      (cfUrl.includes('assets.parnikajewellers.com') || cfUrl.includes('assets.pjstore.com')),
     `Bucket: ${PROJECT_S3_BUCKET}, CF Url: ${cfUrl}`
   );
 

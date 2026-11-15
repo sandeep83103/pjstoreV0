@@ -90,7 +90,7 @@ export async function processCustomerErasure(params: {
       entityType: 'user',
       entityId: userId,
       action: 'DPDP_DATA_ERASURE',
-      actorEmail: params.requestedBy || 'dpdp-system@pjstore.com',
+      actorEmail: params.requestedBy || 'dpdp-system@parnikajewellers.com',
       staffEmail: params.requestedBy,
       timestamp: new Date().toISOString(),
       diff: {

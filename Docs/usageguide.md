@@ -80,12 +80,12 @@ Key environment configuration properties:
 | `AWS_SECRET_ACCESS_KEY` | AWS IAM Secret Access Key | `...` |
 | `DYNAMO_TABLE_PREFIX` | Prefix for DynamoDB tables | `parnika_` |
 | `S3_BUCKET_NAME` | Dedicated S3 bucket for media & invoices | `parnika-jewellers-v0-prod` |
-| `CLOUDFRONT_DISTRIBUTION_DOMAIN` | CloudFront CDN hostname | `assets.pjstore.com` |
+| `CLOUDFRONT_DISTRIBUTION_DOMAIN` | CloudFront CDN hostname | `assets.parnikajewellers.com` |
 | `JWT_SECRET` | 64-char secret for session tokens | `parnika_secure_jwt_secret_token_min_32_bytes_long` |
-| `ADMIN_BOOTSTRAP_EMAIL` | Initial store owner login email | `admin@pjstore.com` |
+| `ADMIN_BOOTSTRAP_EMAIL` | Initial store owner login email | `admin@parnikajewellers.com` |
 | `ADMIN_BOOTSTRAP_PASSWORD` | Initial store owner login password | `AdminParnika@2026` |
 | `PAYMENT_PROVIDER` | Selected gateway adapter | `youpi` (or `razorpay`) |
-| `YOUPI_BASE_API_URL` | YOUPI PG microservice endpoint | `https://pg.pjstore.com/api/v2` |
+| `YOUPI_BASE_API_URL` | YOUPI PG microservice endpoint | `https://pg.parnikajewellers.com/api/v2` |
 | `YOUPI_WEBHOOK_SECRET` | HMAC-SHA256 signature key | `youpi_dev_webhook_secret_key_32_bytes` |
 | `YOUPI_MERCHANT_UPI_HANDLE` | Store UPI VPA for dynamic QR generation | `parnikajewellers@icici` |
 
@@ -127,7 +127,7 @@ This is the complete interactive webstore with database connectivity, API routes
    - **Catalog Browser:** [http://localhost:3000/catalog](http://localhost:3000/catalog)
    - **Customer Login Page:** [http://localhost:3000/account/login](http://localhost:3000/account/login)
    - **Admin Management Portal:** [http://localhost:3000/admin](http://localhost:3000/admin)  
-     *(Log in with `admin@pjstore.com` / `AdminParnika@2026`)*
+     *(Log in with `admin@parnikajewellers.com` / `AdminParnika@2026`)*
    - **DPDP Privacy Rights Portal:** [http://localhost:3000/privacy](http://localhost:3000/privacy)
 
 #### Option B: Standalone Offline Visual Prototype
@@ -339,7 +339,7 @@ Parnika Jewellers complies fully with the India Digital Personal Data Protection
 Navigate to `/admin/login`:
 
 1. **Credentials:**
-   - **Email:** `admin@pjstore.com` (or value of `ADMIN_BOOTSTRAP_EMAIL`)
+   - **Email:** `admin@parnikajewellers.com` (or value of `ADMIN_BOOTSTRAP_EMAIL`)
    - **Password:** `AdminParnika@2026` (or value of `ADMIN_BOOTSTRAP_PASSWORD`)
 2. The authentication endpoint verifies password hashes using `bcrypt` and issues an `httpOnly`, `Secure` JWT session cookie (`admin_session`) valid for 8 hours.
 3. Next.js middleware enforces strict role verification on all `/admin/*` and `/api/admin/*` endpoints, returning `HTTP 403 Forbidden` if a customer session attempts access.
@@ -377,7 +377,7 @@ Click **"Bulk CSV Import"** (`/admin/inventory/bulk`):
    ```
 2. **Example Row:**
    ```csv
-   Antique Gold Long Haram Set,PJ-NK-101,DBI-07.1715,cat-necklaces,3499,6999,1750,5,https://assets.pjstore.com/products/p1715.webp,Grand 3-line traditional haram with peacock motifs.
+   Antique Gold Long Haram Set,PJ-NK-101,DBI-07.1715,cat-necklaces,3499,6999,1750,5,https://assets.parnikajewellers.com/products/p1715.webp,Grand 3-line traditional haram with peacock motifs.
    ```
 3. **Upload & Batch Processing:** The parser validates all rows against Zod schemas, auto-generates missing SKUs, and writes valid items in batches of 25 using DynamoDB `BatchWriteItem`.
 4. **Error Reporting Modal:** If invalid rows exist, a modal lists exact row numbers and validation failure reasons while successfully importing all valid rows.
@@ -441,22 +441,22 @@ Navigate to `/admin/coupons`:
 
 ## 5. Recommended Production Hosting & Deployment (AWS Mumbai ap-south-1)
 
-For hosting `pjstore.com` in production:
+For hosting `www.parnikajewellers.com` in production (connected via GoDaddy to AWS Amplify):
 
 ### 5.1 Architecture Plan
 ```
-                    [ Route 53 / Domain Registrar ]
-                                   │
-                                   ▼
-                       [ AWS CloudFront CDN ]
-                                   │
-             ┌─────────────────────┴─────────────────────┐
-             ▼                                           ▼
+               [ GoDaddy DNS (parnikajewellers.com) ]
+                               │
+                               ▼
+               [ AWS CloudFront CDN / Amplify Edge ]
+                               │
+         ┌─────────────────────┴─────────────────────┐
+         ▼                                           ▼
 [ AWS Amplify Hosting (ap-south-1) ]        [ Amazon S3 (ap-south-1) ]
  - Next.js 14 SSR & Server Components       - Media & Invoices
  - API Route Handlers (/app/api/*)          - CloudFront OAC Protected
-             │
-             ▼
+         │
+         ▼
 [ Amazon DynamoDB (ap-south-1) ]
  - Conditional atomic updates (stock >= :qty)
  - GSIs on orders, users, coupons
@@ -464,9 +464,10 @@ For hosting `pjstore.com` in production:
 
 1. **Host Next.js on AWS Amplify Hosting (Mumbai / ap-south-1):**
    - Supports SSR, ISR, and Route Handlers out-of-the-box.
-   - Zero CORS issues: Next.js API routes (`app/api/*`) serve frontend and backend on the same origin (`pjstore.com`).
+   - Zero CORS issues: Next.js API routes (`app/api/*`) serve frontend and backend on the same origin (`www.parnikajewellers.com`).
    - Auto-deploys straight from GitHub commits on the `main` branch.
-   - Automated SSL certificates via AWS Certificate Manager (ACM).
+   - Automated SSL certificates via Amazon Trust Services.
+   - GoDaddy DNS CNAME record routes `www.parnikajewellers.com` directly to Amplify.
 2. **S3 Behind CloudFront OAC:**
    - Media bucket is completely private. CloudFront Origin Access Control (OAC) signs all image requests.
 3. **Payment Gateway Security:**

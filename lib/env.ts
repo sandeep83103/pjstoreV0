@@ -13,17 +13,17 @@ const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string().optional().default(''),
   DYNAMO_TABLE_PREFIX: z.string().default('parnika_'),
   S3_BUCKET_NAME: z.string().default('parnika-jewellers-v0-prod'),
-  CLOUDFRONT_DISTRIBUTION_DOMAIN: z.string().optional().default('assets.pjstore.com'),
+  CLOUDFRONT_DISTRIBUTION_DOMAIN: z.string().optional().default('assets.parnikajewellers.com'),
   DYNAMODB_ENDPOINT: z.string().url().optional(),
 
   // Authentication & Security
   JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters').default('dev-insecure-jwt-secret-min-16-characters'),
-  ADMIN_BOOTSTRAP_EMAIL: z.string().email().default('admin@pjstore.com'),
+  ADMIN_BOOTSTRAP_EMAIL: z.string().email().default('admin@parnikajewellers.com'),
   ADMIN_BOOTSTRAP_PASSWORD: z.string().min(8).default('admin123456'),
 
   // Payment Providers
   PAYMENT_PROVIDER: z.enum(['youpi', 'razorpay', 'cod']).default('youpi'),
-  YOUPI_BASE_API_URL: z.string().url().optional().default('https://pg.pjstore.com'),
+  YOUPI_BASE_API_URL: z.string().url().optional().default('https://pg.parnikajewellers.com'),
   YOUPI_API_KEY: z.string().optional().default('test_youpi_key'),
   YOUPI_WEBHOOK_SECRET: z.string().optional().default('test_youpi_webhook_secret'),
   RAZORPAY_KEY_ID: z.string().optional(),
@@ -37,7 +37,7 @@ const envSchema = z.object({
   SMTP_PORT: z.coerce.number().optional().default(587),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
-  NEXT_PUBLIC_STORE_URL: z.string().url().default('https://pjstore.com'),
+  NEXT_PUBLIC_STORE_URL: z.string().url().default('https://www.parnikajewellers.com'),
 });
 
 export type Env = z.infer<typeof envSchema>;

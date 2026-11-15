@@ -35,7 +35,7 @@ async function getAdminEmail(req: NextRequest): Promise<string> {
     const decoded = await verifyToken(token);
     if (decoded?.email) return decoded.email;
   }
-  return env.ADMIN_BOOTSTRAP_EMAIL || 'admin@pjstore.com';
+  return env.ADMIN_BOOTSTRAP_EMAIL || 'admin@parnikajewellers.com';
 }
 
 export async function GET(req: NextRequest) {

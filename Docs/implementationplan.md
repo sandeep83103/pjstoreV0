@@ -143,7 +143,7 @@ Build the customer-facing browsing experience, search and filtering systems, pro
 - [x] **2.1 S3 Media Pipeline:**
   - Implement `/api/admin/uploads/sign` route handler to generate short-lived pre-signed PUT URLs with file size ($\le 10\text{MB}$) and MIME type (`image/jpeg`, `image/png`, `image/webp`) restrictions.
   - Implement client-side direct upload component with upload progress indicator.
-  - Image serving strategy: CloudFront CDN URL generation (`https://assets.pjstore.com/products/<productId>/<file>.webp`).
+  - Image serving strategy: CloudFront CDN URL generation (`https://assets.parnikajewellers.com/products/<productId>/<file>.webp`).
 - [x] **2.2 Catalog Browsing & Filtering (`/catalog`, `/catalog/[category]`):**
   - Implement Server-Side Rendered (SSR) / Incremental Static Regeneration (ISR) catalog pages.
   - Multi-faceted filter system:
@@ -351,7 +351,7 @@ Execute comprehensive load and concurrency tests, conduct security audits, achie
   - Deploy AWS EventBridge scheduled rule triggering nightly backup script (`scripts/backup-tables.ts`).
   - Export all DynamoDB tables to compressed JSON snapshots in `s3://parnika-jewellers-v0-prod/backups/<date>/`.
 - [x] **7.5 Production Cutover & Domain Mapping:**
-  - Configure custom domain (`pjstore.com`) on Route 53 with SSL certificate issued via AWS Certificate Manager (ACM).
+  - Configure custom domain (`www.parnikajewellers.com`) on GoDaddy connected to AWS Amplify with SSL certificate issued via Amazon Trust Services.
   - Configure production environment variables and deploy Next.js application to target production hosting.
   - Execute smoke tests on live domain: Category navigation, cart operations, test UPI payment, webhook delivery, admin login.
 

@@ -77,8 +77,8 @@ export function Footer() {
             </div>
             <div className="text-sm text-[#E2D3C4] flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#D4AF37] shrink-0" />
-              <a href="mailto:support@pjstore.com" className="hover:text-[#E9D08A] transition">
-                support@pjstore.com
+              <a href="mailto:support@parnikajewellers.com" className="hover:text-[#E9D08A] transition">
+                support@parnikajewellers.com
               </a>
             </div>
             <div className="text-sm text-[#E2D3C4] flex items-start gap-2">

@@ -587,8 +587,8 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     subgraph Route53["DNS & Networking"]
-        DNS["Amazon Route 53 (pjstore.com)"]
-        ACM["AWS Certificate Manager (SSL/TLS)"]
+        DNS["GoDaddy DNS / Route 53 (www.parnikajewellers.com)"]
+        ACM["AWS Certificate Manager / ATS (SSL/TLS)"]
     end
 
     subgraph HostingOptionA["Hosting Architecture (Vercel Production)"]
@@ -635,16 +635,16 @@ AWS_ACCESS_KEY_ID=AKIA...
 AWS_SECRET_ACCESS_KEY=...
 DYNAMO_TABLE_PREFIX=parnika_
 S3_BUCKET_NAME=parnika-jewellers-v0-prod
-CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.pjstore.com
+CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.parnikajewellers.com
 
 # Auth & Secrets
 JWT_SECRET=super-secure-random-token-64-chars
-ADMIN_BOOTSTRAP_EMAIL=admin@pjstore.com
+ADMIN_BOOTSTRAP_EMAIL=admin@parnikajewellers.com
 ADMIN_BOOTSTRAP_PASSWORD=...
 
 # Payment Gateway Configuration
 PAYMENT_PROVIDER=youpi            # youpi | razorpay | cashfree
-YOUPI_BASE_API_URL=https://pg.pjstore.com
+YOUPI_BASE_API_URL=https://pg.parnikajewellers.com
 YOUPI_API_KEY=...
 YOUPI_WEBHOOK_SECRET=...
 
@@ -659,7 +659,7 @@ SMTP_HOST=email-smtp.ap-south-1.amazonaws.com
 SMTP_PORT=587
 SMTP_USER=...
 SMTP_PASS=...
-NEXT_PUBLIC_STORE_URL=https://pjstore.com
+NEXT_PUBLIC_STORE_URL=https://www.parnikajewellers.com
 ```
 
 ---

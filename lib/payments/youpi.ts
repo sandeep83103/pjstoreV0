@@ -9,7 +9,7 @@ import {
 import { env } from '../env';
 
 export class YouPiPaymentAdapter implements IPaymentProvider {
-  private apiUrl = env.YOUPI_BASE_API_URL || 'https://pg.pjstore.com';
+  private apiUrl = env.YOUPI_BASE_API_URL || 'https://pg.parnikajewellers.com';
   private apiKey = env.YOUPI_API_KEY || 'test_youpi_api_key';
   private webhookSecret = env.YOUPI_WEBHOOK_SECRET || 'test_youpi_webhook_secret';
 

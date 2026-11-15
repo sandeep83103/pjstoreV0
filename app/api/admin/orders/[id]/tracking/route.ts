@@ -62,7 +62,7 @@ export async function PATCH(
       entityType: 'order',
       entityId: order.id,
       action: 'UPDATE',
-      actorEmail: admin.email || 'admin@pjstore.com',
+      actorEmail: admin.email || 'admin@parnikajewellers.com',
       timestamp: shippedAt,
       diff: {
         tracking: trackingPayload,

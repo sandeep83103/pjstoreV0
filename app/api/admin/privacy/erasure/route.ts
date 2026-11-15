@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const result = await processCustomerErasure({
       phone,
       userId,
-      requestedBy: payload.email || 'admin@pjstore.com',
+      requestedBy: payload.email || 'admin@parnikajewellers.com',
       reason,
     });
 

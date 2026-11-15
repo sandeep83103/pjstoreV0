@@ -1,45 +1,46 @@
 # Production Cutover & Domain Mapping Guide — Parnika Jewellers
 
-> Reference Specifications:
+> **Registered Domain:** `www.parnikajewellers.com` & `parnikajewellers.com` (GoDaddy)  
+> **Hosting Platform:** AWS Amplify Hosting (Region: `ap-south-1` Mumbai)  
+> **Media CDN:** Amazon CloudFront + S3 (`assets.parnikajewellers.com`)  
+> **Reference Specifications:**
 > - [problemstatement.md](file:///d:/PJStore%20V0/Docs/problemstatement.md)
 > - [architecture.md](file:///d:/PJStore%20V0/Docs/architecture.md)
 > - [implementationplan.md](file:///d:/PJStore%20V0/Docs/implementationplan.md)
 > - [evals.md](file:///d:/PJStore%20V0/Docs/evals.md)
+> - [usageguide.md](file:///d:/PJStore%20V0/Docs/usageguide.md)
 
 ---
 
-## 1. Domain & DNS Configuration (Route 53 & ACM)
+## 1. Domain & DNS Configuration (GoDaddy & AWS Amplify)
 
-### 1.1 SSL/TLS Certificate Provisioning (AWS Certificate Manager)
-CloudFront distributions require SSL/TLS certificates issued in `us-east-1` (N. Virginia):
+### 1.1 Custom Domain Connection in AWS Amplify
+1. Open the [AWS Amplify Console](https://console.aws.amazon.com/amplify) in **ap-south-1 (Mumbai)**.
+2. Select the app (`Parnika Jewellers` / `pjstoreV0`).
+3. Under **Hosting**, navigate to **Custom domains** $\rightarrow$ click **Add domain**.
+4. Enter `parnikajewellers.com`.
+5. Configure the domain routing:
+   - `www.parnikajewellers.com` $\rightarrow$ points to branch `main` (Primary)
+   - `parnikajewellers.com` $\rightarrow$ redirects to `https://www.parnikajewellers.com`
+6. Click **Save**. AWS Amplify automatically:
+   - Generates the SSL/TLS certificate request via Amazon Trust Services.
+   - Provides DNS validation records for GoDaddy.
 
-1. **Request Public Certificate:**
-   ```bash
-   aws acm request-certificate \
-     --domain-name "pjstore.com" \
-     --subject-alternative-names "*.pjstore.com" "assets.pjstore.com" \
-     --validation-method DNS \
-     --region us-east-1
-   ```
-2. **DNS CNAME Validation:**
-   Add the generated validation CNAME records to the Route 53 hosted zone `pjstore.com`.
-3. **Wait for Issuance:** Verify certificate status transitions to `ISSUED`.
+### 1.2 GoDaddy DNS Record Configuration
+Log in to your **GoDaddy DNS Management Console** for `parnikajewellers.com` and add/update the records provided by Amplify:
 
-### 1.2 Route 53 DNS Record Mapping
-Configure Route 53 hosted zone records pointing to the CloudFront distribution:
-
-| Record Name | Type | Routing Policy | Target / Value | Description |
+| Record Type | Host / Name | Value / Points to | TTL | Purpose |
 |---|---|---|---|---|
-| `pjstore.com` | `A (Alias)` | Simple | `dXXXXXXXXXXXXX.cloudfront.net` | Apex store domain (IPv4) |
-| `pjstore.com` | `AAAA (Alias)` | Simple | `dXXXXXXXXXXXXX.cloudfront.net` | Apex store domain (IPv6) |
-| `www.pjstore.com` | `CNAME` | Simple | `pjstore.com` | Canonical WWW redirect |
-| `assets.pjstore.com` | `A (Alias)` | Simple | `dYYYYYYYYYYYYY.cloudfront.net` | Static S3 asset CDN (OAC) |
+| `CNAME` | `www` | `dXXXXXXXXXXXXX.cloudfront.net` *(from Amplify)* | 1 Hour / Automatic | Directs WWW traffic to your live Next.js store on Amplify |
+| `CNAME` | `_cname...` *(from Amplify)* | `_...acm-validations.aws` *(from Amplify)* | 1 Hour | Automated SSL certificate issuance & auto-renewal |
+| `CNAME` | `assets` | `dYYYYYYYYYYYYY.cloudfront.net` | 1 Hour | CloudFront CDN for S3 product imagery & invoices |
+| `Forwarding` | `@` (Apex) | `https://www.parnikajewellers.com` (301 Permanent) | Default | Redirects bare `parnikajewellers.com` to `www.parnikajewellers.com` |
 
 ---
 
 ## 2. CloudFront & Origin Access Control (OAC) Configuration
 
-### 2.1 Media & Invoices S3 Origin (`assets.pjstore.com`)
+### 2.1 Media & Invoices S3 Origin (`assets.parnikajewellers.com`)
 - **Origin Domain:** `parnika-jewellers-v0-prod.s3.ap-south-1.amazonaws.com`
 - **Origin Access Control (OAC):** Enforce `Always` sign requests with SigV4.
 - **S3 Bucket Policy:**
@@ -64,56 +65,56 @@ Configure Route 53 hosted zone records pointing to the CloudFront distribution:
   ```
 - **Block Public Access:** All 4 S3 Block Public Access toggles remain **Enabled** at all times.
 
-### 2.2 Next.js Fullstack Application Origin (`pjstore.com`)
-- **Default Cache Behavior (`/*`):**
-  - Allowed Methods: `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE`
-  - Cache Policy: `Managed-CachingDisabled` (forward all headers & query parameters for SSR/API)
-  - Origin Request Policy: `Managed-AllViewerExceptHostHeader`
-- **Static Assets Cache Behavior (`/_next/static/*`, `/brand/*`):**
-  - Cache Policy: `Managed-CachingOptimized` (`TTL: 31536000`, `Gzip: true`, `Brotli: true`)
-- **Security Response Headers:**
-  Enforce HSTS (`max-age=63072000`), CSP, X-Frame-Options (`SAMEORIGIN`), X-Content-Type-Options (`nosniff`).
+### 2.2 Next.js Fullstack Application on Amplify (`www.parnikajewellers.com`)
+- **Caching & SSR:** Server-Side Rendering (SSR) and dynamic API route handlers (`/api/*`) execute in AWS Mumbai (`ap-south-1`).
+- **Static Assets (`/_next/static/*`, `/brand/*`):** Cached globally on CloudFront edge locations (`TTL: 31536000`, immutable).
+- **Security Response Headers:** Enforced globally:
+  - HSTS: `max-age=63072000; includeSubDomains; preload`
+  - CSP: `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: *.cloudfront.net assets.parnikajewellers.com www.parnikajewellers.com; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';`
+  - X-Frame-Options: `SAMEORIGIN`
+  - X-Content-Type-Options: `nosniff`
 
 ---
 
-## 3. Production Environment Checklist (`.env.production`)
+## 3. Production Environment Checklist (Amplify Console)
 
-Ensure all production environment variables are configured in the deployment environment:
+Configure these environment variables in **AWS Amplify Console $\rightarrow$ App settings $\rightarrow$ Environment variables**:
 
 ```ini
 # Application Core
 NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://pjstore.com
+NEXT_PUBLIC_STORE_URL=https://www.parnikajewellers.com
 
-# AWS Production Infrastructure (ap-south-1)
+# AWS Production Infrastructure (ap-south-1 Mumbai)
 AWS_REGION=ap-south-1
 AWS_ACCESS_KEY_ID=AKIA...PROD_USER
 AWS_SECRET_ACCESS_KEY=...PROD_SECRET
 DYNAMO_TABLE_PREFIX=parnika_
 S3_BUCKET_NAME=parnika-jewellers-v0-prod
-CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.pjstore.com
+CLOUDFRONT_DISTRIBUTION_DOMAIN=assets.parnikajewellers.com
 
-# Authentication & Sessions
+# Authentication & Admin
 JWT_SECRET=...SECURE_64_CHAR_HEX_TOKEN
-ADMIN_BOOTSTRAP_EMAIL=owner@pjstore.com
-ADMIN_BOOTSTRAP_PASSWORD=...SECURE_ADMIN_HASH
+ADMIN_BOOTSTRAP_EMAIL=admin@parnikajewellers.com
+ADMIN_BOOTSTRAP_PASSWORD=...SECURE_ADMIN_PASSWORD
 
-# Payments & Gateway
+# Payments & Gateway (YOUPI PG / Dynamic UPI QR)
 PAYMENT_PROVIDER=youpi
-YOUPI_BASE_API_URL=https://pg.pjstore.com/api/v2
+YOUPI_BASE_API_URL=https://pg.parnikajewellers.com
 YOUPI_API_KEY=...YOUPI_PROD_KEY
 YOUPI_WEBHOOK_SECRET=...YOUPI_HMAC_SECRET
 YOUPI_MERCHANT_UPI_HANDLE=parnikajewellers@icici
 
-# Licensed Fallback Gateway (Razorpay)
+# Fallback Gateway (Razorpay - Optional)
 RAZORPAY_KEY_ID=rzp_live_...
 RAZORPAY_KEY_SECRET=...
 
 # Logistics & Notifications
-WHATSAPP_PHONE_NUMBER_ID=...
-WHATSAPP_ACCESS_TOKEN=...
-WHATSAPP_STORE_PHONE=+919876543210
-SES_FROM_EMAIL=orders@pjstore.com
+WHATSAPP_STORE_NUMBER=+919876543210
+SMTP_HOST=email-smtp.ap-south-1.amazonaws.com
+SMTP_PORT=587
+SMTP_USER=...
+SMTP_PASS=...
 ```
 
 ---
@@ -142,13 +143,13 @@ npm run backup:tables
 
 ## 5. Post-Cutover Live Smoke Test Verification
 
-Execute the automated end-to-end smoke test suite against the target production or staging URL:
+Execute the automated end-to-end smoke test suite to verify all critical store flows:
 
 ```bash
 npm run test:smoke-e2e
 ```
 
-The smoke test verifies the 7 core customer and admin journeys:
+The smoke test verifies the core customer and admin journeys:
 1. Category navigation and catalog indexing (`/catalog`).
 2. Multi-faceted filtering and search (`/catalog?category=...&minPrice=...`).
 3. Product detail page loading and WhatsApp CTA generation (`/product/[slug]`).

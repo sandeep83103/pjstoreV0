@@ -17,7 +17,7 @@ Build a production-quality e-commerce website for **Parnika Jewellers** to showc
 | Palette | Emerald green, gold, ruby |
 | Logo | Crest logo. **[OPEN]** Place the file at `/public/brand/logo.png` (SVG preferred) |
 | Page background | Derived from the logo: emerald green base with subtle gold crest/pattern motif. Extract exact hex values from the logo file and define them as CSS variables in `styles/tokens.css` |
-| Preferred domain | pjstore.com (if available) |
+| Registered domain | www.parnikajewellers.com (registered in GoDaddy & connected to AWS Amplify) |
 | Tone | Elegant, trustworthy, festive but not cluttered |
 
 Design rules: logo in header and footer, favicon from the crest, gold used for accents and CTAs, ruby for sale badges and alerts, emerald for surfaces. Mobile-first (most traffic will be phones), WCAG AA contrast, lazy-loaded images, product images shown on a neutral or emerald backdrop.
@@ -171,7 +171,7 @@ SMTP_URL=
 ## 15. Open questions
 
 1. Final logo file and exact brand colours.
-2. Domain: pjstore.com availability and hosting choice.
+2. Domain: Resolved — www.parnikajewellers.com registered in GoDaddy and hosted on AWS Amplify (ap-south-1).
 3. Final payment strategy given the risks in section 7.
 4. Shipping: flat rate, weight-based or courier-API integration (Shiprocket, Delhivery)?
 5. Delivery coverage: India only, or specific states?
