@@ -11,7 +11,7 @@ export default function StorefrontLayout({
 }) {
   return (
     <CartProvider>
-      <div className="flex flex-col min-h-screen bg-[var(--color-surface-ivory)]">
+      <div className="flex flex-col min-h-screen bg-[#080706] text-[#F5EFEB] selection:bg-[#D4AF37] selection:text-[#080706]">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

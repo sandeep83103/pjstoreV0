@@ -1,12 +1,20 @@
-/* Brand Theme Tokens — Parnika Jewellers */
+/* Brand Theme Tokens — Parnika Jewellers (aligned with parnika-jewellers-store.html) */
 :root {
-  --color-primary-base: #0B3B24;        /* Emerald Green Primary */
-  --color-primary-dark: #062617;        /* Deep Forest Emerald (Footers, High Contrast) */
-  --color-accent-gold: #D4AF37;         /* Royal Temple Gold (CTAs, Borders, Crest) */
-  --color-accent-light-gold: #F3E5AB;   /* Champagne Gold Accent */
-  --color-ruby-alert: #9B111E;          /* Ruby Red Badges & Stock Alerts */
-  --color-surface-ivory: #FCFBF7;       /* Card Backdrop & Neutral Surface */
-  --color-text-main: #1A1A1A;           /* High contrast body text */
-  --color-text-muted: #666666;          /* Subtitles & borders */
-  --color-border: #E8E4D9;              /* Warm neutral border */
+  --color-bg-main: #080706;             /* Deep Onyx Black */
+  --color-bg-card: #110F0C;             /* Luxury Dark Card Surface */
+  --color-bg-card-hover: #171410;       /* Card Hover Tint */
+  --color-primary-base: #080706;        /* Storefront Primary Background */
+  --color-primary-dark: #050404;        /* Deepest Dark for Drawer & Modals */
+  --color-accent-gold: #D4AF37;         /* Royal Temple Gold */
+  --color-accent-light-gold: #FBE8A6;   /* Champagne / Shimmer Gold */
+  --color-accent-dark-gold: #AA7C11;    /* Deep Antique Gold */
+  --color-ruby-alert: #9B111E;          /* Ruby Red Badges & Offers */
+  --color-emerald-accent: #25D366;      /* WhatsApp / Trust Green */
+  --color-surface-ivory: #080706;       /* Storefront Dark Surface */
+  --color-text-main: #F5EFEB;           /* Warm Ivory Text */
+  --color-text-muted: #CBB99F;          /* Sand Gold / Muted Subtext */
+  --color-border: rgba(212, 175, 55, 0.2); /* Subtle Gold Border */
+  --color-border-strong: rgba(212, 175, 55, 0.45); /* Highlight Gold Border */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-sans: 'Jost', sans-serif;
 }

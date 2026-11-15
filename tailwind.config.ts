@@ -10,17 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          emerald: '#0B3B24',
-          'emerald-dark': '#062617',
+          dark: '#080706',
+          card: '#110F0C',
           gold: '#D4AF37',
-          'gold-light': '#F3E5AB',
+          'gold-light': '#FBE8A6',
+          'gold-dark': '#AA7C11',
           ruby: '#9B111E',
-          ivory: '#FCFBF7',
+          emerald: '#0B3B24',
+          ivory: '#F5EFEB',
+          sand: '#CBB99F',
         },
       },
       fontFamily: {
-        display: ['var(--font-display)', 'serif'],
-        sans: ['var(--font-sans)', 'sans-serif'],
+        display: ['Cormorant Garamond', 'serif'],
+        serif: ['Cormorant Garamond', 'serif'],
+        sans: ['Jost', 'sans-serif'],
       },
     },
   },

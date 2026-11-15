@@ -1,4 +1,5 @@
 @import '../styles/tokens.css';
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,16 +7,103 @@
 
 @layer base {
   body {
-    background-color: var(--color-surface-ivory);
+    background-color: var(--color-bg-main);
     color: var(--color-text-main);
-    font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: var(--font-sans), 'Jost', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), 'Cinzel', 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+    font-family: var(--font-display), 'Cormorant Garamond', serif;
     letter-spacing: -0.01em;
   }
+}
+
+/* Gold Shimmer Text */
+.gold-gradient {
+  background: linear-gradient(135deg, #FBE8A6 0%, #D4AF37 50%, #AA7C11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-soft {
+  background: linear-gradient(135deg, #FFFDF8 0%, #E8D8A6 60%, #C49E35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gold Borders */
+.border-gold {
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+.border-gold-strong {
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+/* Luxury Cards */
+.bg-card {
+  background: #110F0C;
+  border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.bg-card-hover:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
+}
+
+/* Luxury Buttons */
+.btn-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+  color: #080706;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #FBE8A6 0%, #D4AF37 100%);
+  box-shadow: 0 6px 26px rgba(212, 175, 55, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #F5EFEB;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  border-color: #D4AF37;
+  background: rgba(212, 175, 55, 0.08);
+  color: #FBE8A6;
+}
+
+/* Glass Header */
+.glass-nav {
+  background: rgba(8, 7, 6, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+/* Announcement Ticker */
+.ticker-bg {
+  background: linear-gradient(90deg, #1A1308 0%, #2A1F0D 50%, #1A1308 100%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+/* Product Card Badge */
+.badge-gold {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #FBE8A6;
 }
