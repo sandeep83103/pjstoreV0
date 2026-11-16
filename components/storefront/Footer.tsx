@@ -5,9 +5,9 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer id="contact" className="ftr tex-dd border-t-2 border-[#D4AF5A] text-[#E2D3C4] px-6 sm:px-12 py-16 sm:py-20">
-      <div className="ftr-in max-w-[1280px] mx-auto flex flex-col gap-10">
-        <div className="cols flex flex-wrap gap-12 justify-between">
+    <footer id="contact" className="ftr tex-dd border-t-2 border-[#D4AF5A] text-[#E2D3C4] px-4 sm:px-8 lg:px-12 py-12 sm:py-20">
+      <div className="ftr-in max-w-[1440px] 2xl:max-w-[1720px] mx-auto flex flex-col gap-8 sm:gap-10">
+        <div className="cols flex flex-wrap gap-8 sm:gap-12 justify-between">
           {/* Column 1: Brand Logo & Description */}
           <div className="col first flex-[1_1_260px] min-w-[240px] flex flex-col gap-4">
             <div className="relative h-20 w-36 overflow-hidden">
@@ -71,8 +71,8 @@ export function Footer() {
             </h3>
             <div className="text-sm text-[#E2D3C4] flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#D4AF5A] shrink-0" />
-              <a href="tel:+919876543210" className="hover:text-[#E9D08A] transition">
-                +91 98765 43210
+              <a href="tel:+919677255036" className="hover:text-[#E9D08A] transition">
+                +91 96772 55036
               </a>
             </div>
             <div className="text-sm text-[#E2D3C4] flex items-center gap-2">

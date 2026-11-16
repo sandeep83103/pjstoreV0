@@ -32,7 +32,7 @@ const envSchema = z.object({
   // Notifications & Contacts
   WHATSAPP_PHONE_NUMBER_ID: z.string().optional(),
   WHATSAPP_ACCESS_TOKEN: z.string().optional(),
-  WHATSAPP_STORE_NUMBER: z.string().default('+919876543210'),
+  WHATSAPP_STORE_NUMBER: z.string().default('+919677255036'),
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().optional().default(587),
   SMTP_USER: z.string().optional(),

@@ -170,7 +170,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   )}
                 </div>
                 <p className="text-[11px] text-stone-500">
-                  Inclusive of all taxes • Free shipping on orders over ₹1,999
+                  Inclusive of all taxes • Free shipping on orders over ₹599
                 </p>
 
                 {/* Stock Level Indicator */}

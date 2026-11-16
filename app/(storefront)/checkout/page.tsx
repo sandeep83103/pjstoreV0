@@ -70,7 +70,7 @@ export default function CheckoutPage() {
 
   // Shipping cost calculation based on selected method
   const dynamicShippingFee =
-    shippingMethod === 'express' ? 199 : subtotal >= 1999 || subtotal === 0 ? 0 : 99;
+    shippingMethod === 'express' ? 199 : subtotal >= 599 || subtotal === 0 ? 0 : 99;
   const dynamicTotal = Math.max(0, subtotal - discount + dynamicShippingFee);
 
   // COD Ceiling Check (EC-PAY-05)
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                   <span className="text-sm font-bold text-stone-900">
-                    {subtotal >= 1999 ? (
+                    {subtotal >= 599 ? (
                       <span className="text-emerald-700 font-bold">FREE</span>
                     ) : (
                       formatINR(99)

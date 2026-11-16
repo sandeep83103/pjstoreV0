@@ -56,7 +56,7 @@ export default function CartPage() {
     }
   };
 
-  const freeShippingThreshold = 1999;
+  const freeShippingThreshold = 599;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
 
   return (

@@ -59,7 +59,7 @@ export function getWhatsAppEnquiryUrl(
   customStoreUrl?: string
 ): string {
   const storeUrl = customStoreUrl || env.NEXT_PUBLIC_STORE_URL || 'https://www.parnikajewellers.com';
-  const cleanPhone = (env.WHATSAPP_STORE_NUMBER || '+919876543210').replace(/\D/g, '');
+  const cleanPhone = (env.WHATSAPP_STORE_NUMBER || '+919677255036').replace(/\D/g, '');
   const productUrl = `${storeUrl.replace(/\/+$/, '')}/product/${product.slug}`;
 
   const messageText = [

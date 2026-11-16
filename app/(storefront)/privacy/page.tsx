@@ -320,7 +320,7 @@ export default function PrivacyPolicyPage() {
           <div className="bg-stone-50 border border-stone-200/80 rounded-xl p-4 text-xs sm:text-sm space-y-1">
             <p><strong>Grievance Officer:</strong> Smt. P. Radhika</p>
             <p><strong>Email:</strong> <a href="mailto:grievance@parnikajewellers.com" className="text-emerald-700 underline font-semibold">grievance@parnikajewellers.com</a></p>
-            <p><strong>Phone:</strong> +91 98765 43210 (Mon–Sat, 10:00 AM – 6:00 PM IST)</p>
+            <p><strong>Phone:</strong> +91 96772 55036 (Mon–Sat, 10:00 AM – 6:00 PM IST)</p>
             <p><strong>Official Address:</strong> Parnika Jewellers, Ground Floor, Palace Heights, Jubilee Hills, Hyderabad, Telangana - 500033</p>
             <p className="text-stone-500 pt-1 text-xs">
               Statutory Resolution Timeline: All data grievances are acknowledged within 24 hours and resolved within 7 business days.

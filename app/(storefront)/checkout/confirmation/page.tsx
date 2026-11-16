@@ -43,7 +43,7 @@ function ConfirmationContent() {
 
   const displayOrderNo = order?.orderNo || orderNoParam || 'PJ-ORD';
 
-  const whatsAppSupportUrl = `https://wa.me/919876543210?text=${encodeURIComponent(
+  const whatsAppSupportUrl = `https://wa.me/919677255036?text=${encodeURIComponent(
     `Hello Parnika Jewellers, I have placed Order ${displayOrderNo}. Please provide tracking and status updates.`
   )}`;
 

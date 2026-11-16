@@ -24,6 +24,8 @@ const config: Config = {
       fontFamily: {
         display: ['Cormorant Garamond', 'serif'],
         serif: ['Cormorant Garamond', 'serif'],
+        cinzel: ['Cinzel', 'serif'],
+        playfair: ['Playfair Display', 'serif'],
         sans: ['Jost', 'sans-serif'],
       },
     },

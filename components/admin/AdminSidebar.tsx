@@ -16,6 +16,7 @@ import {
 
 const ADMIN_NAV = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Visual Page Editor', href: '/editor', icon: Sparkles },
   { name: 'Inventory & Stock', href: '/admin/inventory', icon: Package },
   { name: 'Orders & Shipments', href: '/admin/orders', icon: ShoppingCart },
   { name: 'Discount Coupons', href: '/admin/coupons', icon: Ticket },

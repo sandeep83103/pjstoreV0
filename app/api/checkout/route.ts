@@ -124,8 +124,8 @@ export async function POST(req: NextRequest) {
     if (payload.shippingMethod === 'express') {
       shippingFee = 199;
     } else {
-      // Standard: Free above ₹1,999, else ₹99
-      shippingFee = subtotal >= 1999 ? 0 : 99;
+      // Standard: Free above ₹599, else ₹99
+      shippingFee = subtotal >= 599 ? 0 : 99;
     }
 
     // 4. Canonical Total

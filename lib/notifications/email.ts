@@ -134,7 +134,7 @@ export function renderOrderConfirmationHtml(order: Order): string {
               Your GST tax invoice (HSN 7117) has been generated and is attached with this email.
             </p>
             <p style="font-size: 11px; color: #999; margin: 0;">
-              Parnika Jewellers • Hyderabad, Telangana • Support: +91 98765 43210
+              Parnika Jewellers • Hyderabad, Telangana • Support: +91 96772 55036
             </p>
           </td>
         </tr>
@@ -190,7 +190,7 @@ export function renderShippingNotificationHtml(order: Order): string {
         <tr>
           <td style="padding: 15px 30px; text-align: center; border-top: 1px solid #eee; background-color: #faf8f5;">
             <p style="font-size: 11px; color: #888; margin: 0;">
-              Need urgent help with delivery? Reply to this email or message us on WhatsApp: +91 98765 43210
+              Need urgent help with delivery? Reply to this email or message us on WhatsApp: +91 96772 55036
             </p>
           </td>
         </tr>

@@ -151,7 +151,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const shippingFee = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
+    const shippingFee = subtotal >= 599 || subtotal === 0 ? 0 : 99;
     const total = Math.max(0, subtotal - discount + shippingFee);
 
     // If customer logged in and cart changed (items adjusted or removed), persist the update
@@ -249,7 +249,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const shippingFee = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
+    const shippingFee = subtotal >= 599 || subtotal === 0 ? 0 : 99;
     const total = Math.max(0, subtotal - discount + shippingFee);
 
     // Persist to DynamoDB if user logged in

@@ -642,7 +642,7 @@ export default function AdminOrderDetailPage() {
               <div className="flex justify-between items-start border-b pb-4">
                 <div>
                   <h2 className="text-xl font-bold font-display text-emerald-950">PARNIKA JEWELLERS</h2>
-                  <p className="text-xs text-gray-500">Hyderabad, Telangana • Support: +91 98765 43210</p>
+                  <p className="text-xs text-gray-500">Hyderabad, Telangana • Support: +91 96772 55036</p>
                   <p className="text-xs text-gray-700 mt-1">Order No: <strong className="font-mono">{order.orderNo}</strong></p>
                 </div>
                 <div className="text-right text-xs">

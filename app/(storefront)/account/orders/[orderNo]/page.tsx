@@ -120,7 +120,7 @@ export default function OrderTrackingDetailPage() {
   const courier = order.tracking?.courier;
   const trackingUrl = resolveCourierTrackingUrl(courier, trackingNumber, order.tracking?.trackingUrl);
 
-  const whatsappSupportUrl = `https://wa.me/919876543210?text=${encodeURIComponent(
+  const whatsappSupportUrl = `https://wa.me/919677255036?text=${encodeURIComponent(
     `Hello Parnika Jewellers, I would like to enquire about my Order #${order.orderNo}.`
   )}`;
 

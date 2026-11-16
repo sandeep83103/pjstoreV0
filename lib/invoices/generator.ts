@@ -11,7 +11,7 @@ export const STORE_GST_CONFIG = {
   state: 'Telangana',
   stateCode: '36',
   address: 'Shop No. 12, Temple Road, Somajiguda, Hyderabad, Telangana - 500082',
-  phone: '+91 98765 43210',
+  phone: '+91 96772 55036',
   email: 'support@parnikajewellers.com',
   website: 'https://www.parnikajewellers.com',
   defaultHsn: '7117', // HSN 7117: Imitation & Fashion Jewellery
