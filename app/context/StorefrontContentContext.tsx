@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { StorefrontContent, DEFAULT_STOREFRONT_CONTENT } from '@/lib/content/storefront';
+import { StorefrontContent, DEFAULT_STOREFRONT_CONTENT } from '@/lib/content/defaults';
 
 interface StorefrontContentContextType {
   content: StorefrontContent;
